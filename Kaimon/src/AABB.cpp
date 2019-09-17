@@ -1,7 +1,6 @@
 #include "AABB.h"
 
 AABB::AABB(std::vector<float>& vertices)
-	: m_minVertex(0.0f, 0.0f, 0.0f), m_maxVertex(0.0f, 0.0f, 0.0f)
 {
 	calculateBoundingBox(vertices);
 }
@@ -13,36 +12,59 @@ void AABB::calculateBoundingBox(std::vector<float>& vertices)
 	{
 		if (i % 8 == 0)
 		{
-			if (i == 0 || vertices[i] < m_minVertex.x)
-				m_minVertex.x = vertices[i];
-			else if (i == 0 || vertices[i] > m_maxVertex.x)
-				m_maxVertex.x = vertices[i];
+			if (i == 0 || vertices[i] < m_localMinVertex.x)
+				m_localMinVertex.x = vertices[i];
+			if (i == 0 || vertices[i] > m_localMaxVertex.x)
+				m_localMaxVertex.x = vertices[i];
 		}
 		else if (i % 8 == 1)
 		{
-			if (i == 1 || vertices[i] < m_minVertex.y)
-				m_minVertex.y = vertices[i];
-			else if (i == 1 || vertices[i] > m_maxVertex.y)
-				m_maxVertex.y = vertices[i];
+			if (i == 1 || vertices[i] < m_localMinVertex.y)
+				m_localMinVertex.y = vertices[i];
+			if (i == 1 || vertices[i] > m_localMaxVertex.y)
+				m_localMaxVertex.y = vertices[i];
 		}
 		else if (i % 8 == 2)
 		{
-			if (i == 2 || vertices[i] < m_minVertex.z)
-				m_minVertex.z = vertices[i];
-			else if (i == 2 || vertices[i] > m_maxVertex.z)
-				m_maxVertex.z = vertices[i];
+			if (i == 2 || vertices[i] < m_localMinVertex.z)
+				m_localMinVertex.z = vertices[i];
+			if (i == 2 || vertices[i] > m_localMaxVertex.z)
+				m_localMaxVertex.z = vertices[i];
 		}
 	}
+
+	setWorldMinVertex(m_localMinVertex);
+	setWorldMaxVertex(m_localMaxVertex);
 }
 
 
-Vector3f AABB::getMinVertex()
+Vector3f AABB::getLocalMinVertex()
 {
-	return m_minVertex;
+	return m_localMinVertex;
 }
 
-Vector3f AABB::getMaxVertex()
+Vector3f AABB::getLocalMaxVertex()
 {
-	return m_maxVertex;
+	return m_localMaxVertex;
+}
+
+Vector3f AABB::getWorldMinVertex()
+{
+	return m_worldMinVertex;
+}
+
+Vector3f AABB::getWorldMaxVertex()
+{
+	return m_worldMaxVertex;
+}
+
+void AABB::setWorldMinVertex(Vector3f vec)
+{
+	m_worldMinVertex.setVector(vec);
+}
+
+void AABB::setWorldMaxVertex(Vector3f vec)
+{
+	m_worldMaxVertex.setVector(vec);
 }
 

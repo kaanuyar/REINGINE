@@ -85,4 +85,20 @@ namespace MathCalc
 		return Vector3f(intersection.x, intersection.y, intersection.z);
 	}
 
+	Vector3f transformVector3f(InteractableEntity& entity, Vector3f pos)
+	{
+		glm::mat4 model = glm::mat4(1.0f);
+
+		model = glm::translate(model, glm::vec3(entity.getTranslationVector().x, entity.getTranslationVector().y, entity.getTranslationVector().z));
+		model = glm::rotate(model, glm::radians(entity.getRotationVector().z), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(entity.getRotationVector().y), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(entity.getRotationVector().x), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(entity.getScale(), entity.getScale(), entity.getScale()));
+
+		glm::vec4 vec(pos.x, pos.y, pos.z, 1.0f);
+		vec = model * vec;
+
+		return Vector3f(vec.x, vec.y, vec.z);
+	}
+
 }

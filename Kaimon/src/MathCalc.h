@@ -4,6 +4,9 @@
 #include "Vector3f.h"
 #include "ViewFrustum.h"
 
+
+#include "InteractableEntity.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -17,4 +20,6 @@ namespace MathCalc
 	void createProjectionMatrix(float width, float height, float fov, float nearPlane, float farPlane, float* fArray);
 	Vector3f createRayCast(Camera& camera, ViewFrustum& frustum, float xpos, float ypos);
 	Vector3f findIntersectionPointForXPlane(Vector3f ray, Camera& camera);
+
+	Vector3f transformVector3f(InteractableEntity& entity, Vector3f pos);
 }

@@ -6,12 +6,21 @@ class AABB
 {
 public:
 	AABB(std::vector<float>& vertices);
-	Vector3f getMinVertex();
-	Vector3f getMaxVertex();
+	Vector3f getLocalMinVertex();
+	Vector3f getLocalMaxVertex();
+
+	Vector3f getWorldMinVertex();
+	Vector3f getWorldMaxVertex();
+
+	void setWorldMinVertex(Vector3f vec);
+	void setWorldMaxVertex(Vector3f vec);
 
 private:
 	void calculateBoundingBox(std::vector<float>& vertices);
 
-	Vector3f m_minVertex;
-	Vector3f m_maxVertex;
+	Vector3f m_localMinVertex;
+	Vector3f m_localMaxVertex;
+
+	Vector3f m_worldMinVertex;
+	Vector3f m_worldMaxVertex;
 };

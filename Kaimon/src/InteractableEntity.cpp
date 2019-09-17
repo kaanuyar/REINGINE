@@ -1,16 +1,19 @@
 #include "InteractableEntity.h"
 
 #include <iostream>
+#include "MathCalc.h"
 
 InteractableEntity::InteractableEntity(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, float worldScale)
 	: Entity(rawEntity, texture, worldTranslation, worldRotation, worldScale), m_aabb(getVertices())
 {
-	std::cout << "min: " << m_aabb.getMinVertex().x << " " << m_aabb.getMinVertex().y << " " << m_aabb.getMinVertex().z << std::endl;
-	std::cout << "max: " << m_aabb.getMaxVertex().x << " " << m_aabb.getMaxVertex().y << " " << m_aabb.getMaxVertex().z << std::endl;
+	//std::cout << "min: " << m_aabb.getLocalMinVertex().x << " " << m_aabb.getLocalMinVertex().y << " " << m_aabb.getLocalMinVertex().z << std::endl;
+	//std::cout << "max: " << m_aabb.getLocalMaxVertex().x << " " << m_aabb.getLocalMaxVertex().y << " " << m_aabb.getLocalMaxVertex().z << std::endl;
 }
 
 void InteractableEntity::update(float deltaTime)
 {
+	updateCollider();
+
 	std::vector<Event>& eventList = m_eventHandler.getEventList();
 	if (eventList.empty())
 		return;
@@ -50,6 +53,15 @@ void InteractableEntity::update(float deltaTime)
 	m_eventHandler.deleteDeadEventsFromList();
 }
 
+void InteractableEntity::updateCollider()
+{
+	m_aabb.setWorldMinVertex(MathCalc::transformVector3f(*this, m_aabb.getLocalMinVertex()));
+	m_aabb.setWorldMaxVertex(MathCalc::transformVector3f(*this, m_aabb.getLocalMaxVertex()));
+
+	std::cout << "min: " << m_aabb.getWorldMinVertex().x << " " << m_aabb.getWorldMinVertex().y << " " << m_aabb.getWorldMinVertex().z << std::endl;
+	std::cout << "max: " << m_aabb.getWorldMaxVertex().x << " " << m_aabb.getWorldMaxVertex().y << " " << m_aabb.getWorldMaxVertex().z << std::endl;
+}
+
 EventHandler& InteractableEntity::getEventHandler()
 {
 	return m_eventHandler;
@@ -65,6 +77,7 @@ void InteractableEntity::addRayCaster(RayCaster* rayCasterPtr)
 	}
 	
 }
+
 
 void InteractableEntity::moveForward(float deltaTime)
 {
