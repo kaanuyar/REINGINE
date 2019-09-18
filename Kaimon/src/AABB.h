@@ -1,11 +1,18 @@
 #pragma once
 #include <vector>
 #include "Vector3f.h"
+#include "Entity.h"
+#include "ICollider.h"
 
-class AABB 
+class AABB : public ICollider
 {
 public:
 	AABB(std::vector<float>& vertices);
+	void update(Entity& entity);
+
+	bool collideWith(ICollider* collider);
+	bool collideWith(AABB* aabb);
+
 	Vector3f getLocalMinVertex();
 	Vector3f getLocalMaxVertex();
 

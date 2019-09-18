@@ -16,6 +16,8 @@
 #include "ViewFrustum.h"
 #include "IUpdatable.h"
 #include "RayCaster.h"
+#include "CollideableEntity.h"
+#include "CollisionManager.h"
 
 int main()
 {
@@ -33,8 +35,11 @@ int main()
 
 	Entity terrain(rawTerrain, texture1, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 0.0f, 0.0f), 1.0f);
 	InteractableEntity entity(rawEntity, texture2, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 0.0f, 0.0f), 1.0f);
-	std::vector<Entity*> entityList = { &terrain, &entity };
+	CollideableEntity staticEntity(rawEntity, texture2, Vector3f(0.0f, 0.0f, -10.0f), Vector3f(0.0f, 0.0f, 0.0f), 1.0f);
+
+	std::vector<Entity*> entityList = { &terrain, &entity, &staticEntity };
 	std::vector<IUpdatable*> updatableList = { &camera, &frustum, &entity };
+	std::vector<ICollideable*> collideableList = { &entity, &staticEntity };
 
 	RayCaster rayCaster(camera, frustum);
 	entity.addRayCaster(&rayCaster);
@@ -48,6 +53,8 @@ int main()
 
 		for (IUpdatable* updatable : updatableList)
 			updatable->update(deltaTime);
+
+		CollisionManager::checkCollisions(collideableList);
 
 		Renderer::renderEntities(entityShaderProgram, camera, frustum, entityList);
 		window.update();

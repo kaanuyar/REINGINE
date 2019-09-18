@@ -1,8 +1,34 @@
 #include "AABB.h"
 
+#include "MathCalc.h"
+
 AABB::AABB(std::vector<float>& vertices)
 {
 	calculateBoundingBox(vertices);
+}
+
+void AABB::update(Entity& entity)
+{
+	setWorldMinVertex(MathCalc::transformVector3f(entity, m_localMinVertex));
+	setWorldMaxVertex(MathCalc::transformVector3f(entity, m_localMaxVertex));
+
+	//std::cout << "min: " << m_worldMinVertex.x << " " << m_worldMinVertex.y << " " << m_worldMinVertex.z << std::endl;
+	//std::cout << "max: " << m_worldMaxVertex.x << " " << m_worldMaxVertex.y << " " << m_worldMaxVertex.z << std::endl;
+}
+
+bool AABB::collideWith(ICollider* collider)
+{
+	return collider->collideWith(this);
+}
+
+bool AABB::collideWith(AABB* aabb)
+{
+	return (m_worldMaxVertex.x > aabb->getWorldMinVertex().x &&
+			m_worldMinVertex.x < aabb->getWorldMaxVertex().x &&
+			m_worldMaxVertex.y > aabb->getWorldMinVertex().y &&
+			m_worldMinVertex.y < aabb->getWorldMaxVertex().y &&
+			m_worldMaxVertex.z > aabb->getWorldMinVertex().z &&
+			m_worldMinVertex.z < aabb->getWorldMaxVertex().z);
 }
 
 // assumes vertices array consists of pos(3), texture(2) and normal(3)

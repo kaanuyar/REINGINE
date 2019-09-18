@@ -85,7 +85,7 @@ namespace MathCalc
 		return Vector3f(intersection.x, intersection.y, intersection.z);
 	}
 
-	Vector3f transformVector3f(InteractableEntity& entity, Vector3f pos)
+	Vector3f transformVector3f(Entity& entity, Vector3f pos)
 	{
 		glm::mat4 model = glm::mat4(1.0f);
 

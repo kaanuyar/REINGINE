@@ -21,5 +21,5 @@ namespace MathCalc
 	Vector3f createRayCast(Camera& camera, ViewFrustum& frustum, float xpos, float ypos);
 	Vector3f findIntersectionPointForXPlane(Vector3f ray, Camera& camera);
 
-	Vector3f transformVector3f(InteractableEntity& entity, Vector3f pos);
+	Vector3f transformVector3f(Entity& entity, Vector3f pos);
 }
