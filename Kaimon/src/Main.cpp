@@ -35,11 +35,12 @@ int main()
 
 	Entity terrain(rawTerrain, texture1, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 0.0f, 0.0f), 1.0f);
 	InteractableEntity entity(rawEntity, texture2, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 0.0f, 0.0f), 1.0f);
-	CollideableEntity staticEntity(rawEntity, texture2, Vector3f(0.0f, 0.0f, -10.0f), Vector3f(0.0f, 0.0f, 0.0f), 1.0f);
+	CollideableEntity staticEntity(rawEntity, texture2, Vector3f(0.0f, 0.0f, -10.0f), Vector3f(0.0f, 0.0f, 0.0f), 2.0f);
+	CollideableEntity staticEntity2(rawEntity, texture2, Vector3f(10.0f, 0.0f, -10.0f), Vector3f(0.0f, 0.0f, 0.0f), 2.0f);
 
-	std::vector<Entity*> entityList = { &terrain, &entity, &staticEntity };
+	std::vector<Entity*> entityList = { &terrain, &entity, &staticEntity, &staticEntity2 };
 	std::vector<IUpdatable*> updatableList = { &camera, &frustum, &entity };
-	std::vector<ICollideable*> collideableList = { &entity, &staticEntity };
+	std::vector<ICollideable*> collideableList = { &entity, &staticEntity, &staticEntity2 };
 
 	RayCaster rayCaster(camera, frustum);
 	entity.addRayCaster(&rayCaster);

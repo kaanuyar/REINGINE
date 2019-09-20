@@ -14,8 +14,8 @@ namespace CollisionManager
 					collideableList[i]->collisionResolution();
 					collideableList[j]->collisionResolution();
 				}
-				else
-					std::cout << std::endl;
+				//else
+					//std::cout << std::endl;
 			}
 		}
 	}

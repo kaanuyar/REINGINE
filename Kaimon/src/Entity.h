@@ -15,6 +15,7 @@ public:
 	void increaseTranslationVector(float dx, float dy, float dz);
 	void increaseRotationVector(float dx, float dy, float dz);
 	void increaseScale(float ds);
+	void setTranslationVector(Vector3f vec);
 	Vector3f getTranslationVector();
 	Vector3f getRotationVector();
 	float getScale();

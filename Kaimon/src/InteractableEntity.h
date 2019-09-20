@@ -33,4 +33,5 @@ private:
 	bool m_hasRayCaster = false;
 
 	AABB m_aabb;
+	Vector3f m_prevTranslationVector;
 };	

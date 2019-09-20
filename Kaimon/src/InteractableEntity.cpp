@@ -3,7 +3,8 @@
 #include <iostream>
 
 InteractableEntity::InteractableEntity(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, float worldScale)
-	: Entity(rawEntity, texture, worldTranslation, worldRotation, worldScale), m_aabb(getVertices())
+	: Entity(rawEntity, texture, worldTranslation, worldRotation, worldScale), m_aabb(getVertices()),
+	  m_prevTranslationVector(worldTranslation.x, worldTranslation.y, worldTranslation.z)
 {
 	//std::cout << "min: " << m_aabb.getLocalMinVertex().x << " " << m_aabb.getLocalMinVertex().y << " " << m_aabb.getLocalMinVertex().z << std::endl;
 	//std::cout << "max: " << m_aabb.getLocalMaxVertex().x << " " << m_aabb.getLocalMaxVertex().y << " " << m_aabb.getLocalMaxVertex().z << std::endl;
@@ -11,7 +12,7 @@ InteractableEntity::InteractableEntity(RawEntity& rawEntity, Texture& texture, V
 
 void InteractableEntity::update(float deltaTime)
 {
-	m_aabb.update(*this);
+	m_prevTranslationVector.setVector(getTranslationVector());
 
 	std::vector<Event>& eventList = m_eventHandler.getEventList();
 	if (eventList.empty())
@@ -50,6 +51,9 @@ void InteractableEntity::update(float deltaTime)
 			it->isAlive = false;
 	}
 	m_eventHandler.deleteDeadEventsFromList();
+
+
+	m_aabb.update(*this);
 }
 
 
@@ -77,7 +81,10 @@ ICollider* InteractableEntity::getCollider()
 #include <iostream>
 void InteractableEntity::collisionResolution()
 {
-	std::cout << "interactableEntity: collision detected" << std::endl;
+	//std::cout << "interactableEntity: collision detected" << std::endl;
+	setTranslationVector(m_prevTranslationVector);
+	m_aabb.update(*this);
+	m_eventHandler.getEventList().clear();
 }
 
 

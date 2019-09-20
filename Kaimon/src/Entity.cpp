@@ -40,6 +40,11 @@ void Entity::increaseScale(float ds)
 	m_scale += ds;
 }
 
+void Entity::setTranslationVector(Vector3f vec)
+{
+	m_translationVector.setVector(vec);
+}
+
 unsigned int Entity::getVaoID()
 {
 	return m_rawEntity.getVaoID();
