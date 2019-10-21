@@ -20,8 +20,8 @@ void InputHandler::key_callback(GLFWwindow* window, int key, int scancode, int a
 		state = Event::KEY_A;
 	else if (key == GLFW_KEY_D)
 		state = Event::KEY_D;
-	else if (key == GLFW_KEY_R)
-		state = Event::KEY_R;
+	/*else if (key == GLFW_KEY_R)
+		state = Event::KEY_R;*/
 	else
 		return;
 

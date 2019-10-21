@@ -18,6 +18,9 @@
 #include "RayCaster.h"
 #include "CollideableEntity.h"
 #include "CollisionManager.h"
+#include "Obstacle.h"
+#include "Player.h"
+#include "PythonExtension.h"
 
 int main()
 {
@@ -29,28 +32,38 @@ int main()
 	entityShaderProgram.loadLight(light);
 
 	RawEntity rawEntity = OBJLoader::loadFile("res/models/wallCube2.obj");
+	RawEntity rawEntity2 = OBJLoader::loadFile("res/models/tree.obj");
 	RawEntity rawTerrain = Terrain::createTerrain(20, 20);
 	Texture texture1("res/textures/checker128.png", 0);
 	Texture texture2("res/textures/wall.jpg", 1);
 
 	Entity terrain(rawTerrain, texture1, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 0.0f, 0.0f), 1.0f);
-	InteractableEntity entity(rawEntity, texture2, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 0.0f, 0.0f), 1.0f);
-	CollideableEntity staticEntity(rawEntity, texture2, Vector3f(0.0f, 0.0f, -10.0f), Vector3f(0.0f, 0.0f, 0.0f), 2.0f);
-	CollideableEntity staticEntity2(rawEntity, texture2, Vector3f(10.0f, 0.0f, -10.0f), Vector3f(0.0f, 0.0f, 0.0f), 2.0f);
+	Player player(rawEntity2, texture2, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 0.0f, 0.0f), 3.0f);
+	Obstacle wall_1(rawEntity, texture2, Vector3f(0.0f, 0.0f, -10.0f), Vector3f(0.0f, 0.0f, 0.0f), 2.0f);
+	Obstacle wall_2(rawEntity, texture2, Vector3f(10.0f, 0.0f, -10.0f), Vector3f(0.0f, 0.0f, 0.0f), 2.0f);
+	Obstacle wall_3(rawEntity, texture2, Vector3f(-10.0f, 0.0f, -10.0f), Vector3f(0.0f, 0.0f, 0.0f), 5.0f);
 
-	std::vector<Entity*> entityList = { &terrain, &entity, &staticEntity, &staticEntity2 };
-	std::vector<IUpdatable*> updatableList = { &camera, &frustum, &entity };
-	std::vector<ICollideable*> collideableList = { &entity, &staticEntity, &staticEntity2 };
+	std::vector<Entity*> entityList = { &terrain, &player, &wall_1, &wall_2, &wall_3 };
+	std::vector<IUpdatable*> updatableList = { &camera, &frustum, &player };
+	std::vector<ICollideable*> collideableList = { &player, &wall_1, &wall_2, &wall_3 };
+
+	std::vector<Obstacle*> obstacleList = { &wall_1, &wall_2, &wall_3 };
 
 	RayCaster rayCaster(camera, frustum);
-	entity.addRayCaster(&rayCaster);
+	player.addRayCaster(&rayCaster);
 
 	InputHandler inputHandler(window, updatableList);
 	Timer timer;
 
+
+	PythonExtension pythonExt;
+
 	while (!window.isWindowShouldClose())
 	{
 		float deltaTime = timer.getDeltaTime();
+
+		Vector3f vec = pythonExt.callPythonAI(player, obstacleList);
+		player.moveTo(vec, deltaTime);
 
 		for (IUpdatable* updatable : updatableList)
 			updatable->update(deltaTime);

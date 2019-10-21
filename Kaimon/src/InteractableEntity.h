@@ -6,32 +6,16 @@
 #include "IUpdatable.h"
 #include "RayCaster.h"
 #include "AABB.h"
-#include "ICollideable.h"
 
-class InteractableEntity : public Entity, public IUpdatable, public ICollideable
+#include "CollideableEntity.h"
+
+class InteractableEntity : public CollideableEntity, public IUpdatable
 {
 public:
 	InteractableEntity(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, float worldScale);
-	void update(float deltaTime);
-	EventHandler& getEventHandler();
-	void addRayCaster(RayCaster* rayCasterPtr);
 
-	ICollider* getCollider();
-	void collisionResolution();
-
-private:
-	EventHandler m_eventHandler;
-
-	void moveForward(float deltaTime);
-	void moveBackward(float deltaTime);
-	void moveRight(float deltaTime);
-	void moveLeft(float deltaTime);
-	void rotateAroundYAxis(float deltaTime);
-	bool moveTo(Vector3f pos, float deltaTime);
-
-	RayCaster* m_rayCasterPtr = nullptr;
-	bool m_hasRayCaster = false;
-
-	AABB m_aabb;
-	Vector3f m_prevTranslationVector;
+	EventHandler& getEventHandler() = 0;
+	virtual void update(float deltaTime) = 0;
+	virtual ICollider* getCollider() = 0;
+	virtual void collisionResolution() = 0;
 };	
