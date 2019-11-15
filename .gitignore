@@ -3,3 +3,4 @@
 *.opendb
 *.db
 *x64
+*__pycache__/

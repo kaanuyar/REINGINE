@@ -1,6 +1,6 @@
 #include "Obstacle.h"
 
-Obstacle::Obstacle(RawEntity & rawEntity, Texture & texture, Vector3f worldTranslation, Vector3f worldRotation, float worldScale)
+Obstacle::Obstacle(RawEntity & rawEntity, Texture & texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
 	: CollideableEntity(rawEntity, texture, worldTranslation, worldRotation, worldScale), m_aabb(getVertices())
 {
 	m_aabb.update(*this);

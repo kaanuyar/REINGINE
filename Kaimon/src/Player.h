@@ -5,7 +5,7 @@
 class Player : public InteractableEntity
 {
 public:
-	Player(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, float worldScale);
+	Player(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
 
 	void addRayCaster(RayCaster* rayCasterPtr);
 	

@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(RawEntity & rawEntity, Texture & texture, Vector3f worldTranslation, Vector3f worldRotation, float worldScale)
+Player::Player(RawEntity & rawEntity, Texture & texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
 	: InteractableEntity(rawEntity, texture, worldTranslation, worldRotation, worldScale), m_aabb(getVertices()),
 		m_prevTranslationVector(worldTranslation.x, worldTranslation.y, worldTranslation.z)
 {

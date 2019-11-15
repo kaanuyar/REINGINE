@@ -1,8 +1,8 @@
 #include "Entity.h"
 #include <GLAD\glad.h>
 
-Entity::Entity(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, float worldScale)
-	: m_rawEntity(rawEntity), m_texture(texture), m_translationVector(worldTranslation), m_rotationVector(worldRotation), m_scale(worldScale)
+Entity::Entity(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
+	: m_rawEntity(rawEntity), m_texture(texture), m_translationVector(worldTranslation), m_rotationVector(worldRotation), m_scaleVector(worldScale)
 {
 }
 
@@ -18,6 +18,11 @@ Vector3f Entity::getTranslationVector()
 Vector3f Entity::getRotationVector()
 {
 	return m_rotationVector;
+}
+
+Vector3f Entity::getScaleVector()
+{
+	return m_scaleVector;
 }
 
 float Entity::getScale()

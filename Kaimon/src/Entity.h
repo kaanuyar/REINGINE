@@ -7,7 +7,7 @@
 class Entity
 {
 public:
-	Entity(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, float worldScale);
+	Entity(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
 	virtual ~Entity();
 	unsigned int getVaoID();
 	unsigned int getTextureID();
@@ -18,6 +18,7 @@ public:
 	void setTranslationVector(Vector3f vec);
 	Vector3f getTranslationVector();
 	Vector3f getRotationVector();
+	Vector3f getScaleVector();
 	float getScale();
 	unsigned int getIndexCount();
 	unsigned int getVertexCount();
@@ -29,4 +30,6 @@ private:
 	Vector3f m_translationVector;
 	Vector3f m_rotationVector;
 	float m_scale;
+
+	Vector3f m_scaleVector;
 };

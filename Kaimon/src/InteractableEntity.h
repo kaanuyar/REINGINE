@@ -12,7 +12,7 @@
 class InteractableEntity : public CollideableEntity, public IUpdatable
 {
 public:
-	InteractableEntity(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, float worldScale);
+	InteractableEntity(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
 
 	EventHandler& getEventHandler() = 0;
 	virtual void update(float deltaTime) = 0;
