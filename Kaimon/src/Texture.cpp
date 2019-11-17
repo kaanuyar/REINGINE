@@ -1,9 +1,9 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include <STB\stb_image.h>
+#include <STB/stb_image.h>
 #include <iostream>
 
 #include "Texture.h"
-#include <GLAD\glad.h>
+#include <GLAD/glad.h>
 
 Texture::Texture(std::string texturePath, unsigned int textureUnit)
 	: m_textureID{ 0 }, m_textureUnit(textureUnit)

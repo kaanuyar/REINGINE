@@ -1,5 +1,5 @@
 #include "Entity.h"
-#include <GLAD\glad.h>
+#include <GLAD/glad.h>
 
 Entity::Entity(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
 	: m_rawEntity(rawEntity), m_texture(texture), m_translationVector(worldTranslation), m_rotationVector(worldRotation), m_scaleVector(worldScale)

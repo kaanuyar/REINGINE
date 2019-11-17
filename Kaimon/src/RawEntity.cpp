@@ -1,5 +1,5 @@
 #include "RawEntity.h"
-#include <GLAD\glad.h>
+#include <GLAD/glad.h>
 #include <iostream>
 
 RawEntity::RawEntity(std::vector<float>&& vertices, std::vector<unsigned int>&& indices)

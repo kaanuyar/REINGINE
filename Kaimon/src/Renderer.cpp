@@ -1,6 +1,6 @@
 #include "Renderer.h"
-#include <GLAD\glad.h>
-#include <GLFW\glfw3.h>
+#include <GLAD/glad.h>
+#include <GLFW/glfw3.h>
 
 void Renderer::renderEntities(EntityShaderProgram& entityShaderProgram, Camera& camera, ViewFrustum& frustum, std::vector<Entity*>& entityList)
 {
