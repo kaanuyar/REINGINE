@@ -14,12 +14,10 @@ public:
 	unsigned int getTextureUnit();
 	void increaseTranslationVector(float dx, float dy, float dz);
 	void increaseRotationVector(float dx, float dy, float dz);
-	void increaseScale(float ds);
 	void setTranslationVector(Vector3f vec);
 	Vector3f getTranslationVector();
 	Vector3f getRotationVector();
 	Vector3f getScaleVector();
-	float getScale();
 	unsigned int getIndexCount();
 	unsigned int getVertexCount();
 	std::vector<float>& getVertices();
@@ -29,7 +27,5 @@ private:
 	Texture& m_texture;
 	Vector3f m_translationVector;
 	Vector3f m_rotationVector;
-	float m_scale;
-
 	Vector3f m_scaleVector;
 };

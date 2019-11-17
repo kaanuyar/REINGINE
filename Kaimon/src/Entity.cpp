@@ -25,10 +25,6 @@ Vector3f Entity::getScaleVector()
 	return m_scaleVector;
 }
 
-float Entity::getScale()
-{
-	return m_scale;
-}
 
 void Entity::increaseTranslationVector(float dx, float dy, float dz)
 {
@@ -40,10 +36,6 @@ void Entity::increaseRotationVector(float dx, float dy, float dz)
 	m_rotationVector.increasePosition(dx, dy, dz);
 }
 
-void Entity::increaseScale(float ds)
-{
-	m_scale += ds;
-}
 
 void Entity::setTranslationVector(Vector3f vec)
 {

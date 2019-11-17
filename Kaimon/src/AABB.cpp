@@ -5,6 +5,7 @@
 AABB::AABB(std::vector<float>& vertices)
 {
 	calculateBoundingBox(vertices);
+	// add update method here for the creation this shit is stupid is hell and give entity to this function not vertices :)
 }
 
 void AABB::update(Entity& entity)

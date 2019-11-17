@@ -21,6 +21,7 @@
 #include "Obstacle.h"
 #include "Player.h"
 #include "PythonExtension.h"
+#include "Target.h"
 
 class Game
 {
@@ -28,6 +29,7 @@ public:
 	Game(Window& window);
 	void update(float deltaTime);
 	
+	void onSuccess();
 private:
 	ViewFrustum m_frustum;
 	EntityShaderProgram m_entityShaderProgram;
@@ -39,14 +41,14 @@ private:
 
 	Entity m_terrain;
 	Player m_player;
-	Obstacle m_wall_1, m_wall_2, m_wall_3;
-	Obstacle m_target;
+	Obstacle m_wall_1, m_wall_2, m_wall_3, m_wall_4;
+	Target m_target;
 
 	std::vector<Entity*> m_entityList;
 	std::vector<IUpdatable*> m_updatableList;
 	std::vector<ICollideable*> m_collideableList;
 
-	std::vector<Obstacle*> m_obstacleList;
+	//std::vector<Obstacle*> m_obstacleList;
 
 	RayCaster m_rayCaster;
 	InputHandler m_inputHandler;

@@ -1,6 +1,5 @@
 #include "CollisionManager.h"
 
-#include <iostream>
 namespace CollisionManager
 {
 	void checkCollisions(std::vector<ICollideable*>& collideableList)
@@ -11,11 +10,9 @@ namespace CollisionManager
 			{
 				if (collideableList[i]->getCollider()->collideWith(collideableList[j]->getCollider()))
 				{
-					collideableList[i]->collisionResolution();
-					collideableList[j]->collisionResolution();
+					collideableList[i]->collisionResolution(collideableList[j]);
+					collideableList[j]->collisionResolution(collideableList[i]);
 				}
-				//else
-					//std::cout << std::endl;
 			}
 		}
 	}

@@ -3,12 +3,13 @@
 #include "AABB.h"
 #include "CollideableEntity.h"
 
-class Obstacle : public CollideableEntity
+class Target : public CollideableEntity
 {
 public:
-	Obstacle(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
+	Target(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
 
 	virtual ICollider* getCollider();
+	//virtual void collisionResolution();
 	virtual void collisionResolution(ICollideable* collideable);
 	virtual void collisionResolution(Player* player);
 	virtual void collisionResolution(Obstacle* obstacle);

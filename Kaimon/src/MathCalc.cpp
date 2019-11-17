@@ -1,4 +1,5 @@
 #include "MathCalc.h"
+#include <random>
 
 namespace MathCalc
 {
@@ -99,6 +100,14 @@ namespace MathCalc
 		vec = model * vec;
 
 		return Vector3f(vec.x, vec.y, vec.z);
+	}
+
+	float generateRandomFloat(float lowerBound, float upperBound)
+	{
+		std::random_device rd;
+		std::mt19937 rng(rd());
+		std::uniform_real_distribution<float> distance(lowerBound, upperBound);
+		return distance(rng);
 	}
 
 }

@@ -1,8 +1,9 @@
 #include "Player.h"
+#include "Game.h"
 
-Player::Player(RawEntity & rawEntity, Texture & texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
+Player::Player(Game* game, RawEntity & rawEntity, Texture & texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
 	: InteractableEntity(rawEntity, texture, worldTranslation, worldRotation, worldScale), m_aabb(getVertices()),
-		m_prevTranslationVector(worldTranslation.x, worldTranslation.y, worldTranslation.z)
+		m_prevTranslationVector(worldTranslation.x, worldTranslation.y, worldTranslation.z), m_game(game)
 {
 }
 
@@ -74,13 +75,29 @@ ICollider* Player::getCollider()
 	return &m_aabb;
 }
 
-#include <iostream>
-void Player::collisionResolution()
+void Player::collisionResolution(ICollideable* collideable)
 {
-	//std::cout << "interactableEntity: collision detected" << std::endl;
+	collideable->collisionResolution(this);
+}
+
+void Player::collisionResolution(Player* player)
+{
+}
+
+void Player::collisionResolution(Obstacle* obstacle)
+{
 	setTranslationVector(m_prevTranslationVector);
 	m_aabb.update(*this);
 	m_eventHandler.getEventList().clear();
+}
+
+void Player::collisionResolution(Target* target)
+{
+	setTranslationVector(Vector3f(0.0f, 0.0f, 0.0f));
+	m_aabb.update(*this);
+	m_eventHandler.getEventList().clear();
+
+	m_game->onSuccess();
 }
 
 AABB& Player::getAABB()

@@ -22,4 +22,5 @@ namespace MathCalc
 	Vector3f findIntersectionPointForXPlane(Vector3f ray, Camera& camera);
 
 	Vector3f transformVector3f(Entity& entity, Vector3f pos);
+	float generateRandomFloat(float lowerBound, float upperBound);
 }

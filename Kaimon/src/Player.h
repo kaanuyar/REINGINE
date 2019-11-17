@@ -2,17 +2,23 @@
 
 #include "InteractableEntity.h"
 
+class Game;
+
 class Player : public InteractableEntity
 {
 public:
-	Player(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
+	Player(Game* game, RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
 
 	void addRayCaster(RayCaster* rayCasterPtr);
 	
 	virtual EventHandler& getEventHandler();
 	virtual void update(float deltaTime);
 	virtual ICollider* getCollider();
-	virtual void collisionResolution();
+	//virtual void collisionResolution();
+	virtual void collisionResolution(ICollideable* collideable);
+	virtual void collisionResolution(Player* player);
+	virtual void collisionResolution(Obstacle* obstacle);
+	virtual void collisionResolution(Target* target);
 
 	// for testing 
 	AABB& getAABB();
@@ -32,4 +38,5 @@ private:
 
 	AABB m_aabb;
 	Vector3f m_prevTranslationVector;
+	Game* m_game;
 };
