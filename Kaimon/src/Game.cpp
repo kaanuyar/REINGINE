@@ -14,7 +14,7 @@ Game::Game(Window& window)
 	m_texture1("res/textures/checker128.png", 0),
 	m_texture2("res/textures/gray.png", 1),
 	m_texture3("res/textures/reddish.png", 2),
-	m_texture4("res/textures/black.png", 3),
+	m_texture4("res/textures/green.png", 3),
 	m_terrain(m_rawTerrain, m_texture1, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(1.0f, 1.0f, 1.0f)),
 	m_player(this, m_rawEntity, m_texture3, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(1.0f, 1.0f, 1.0f)),
 	m_target(m_rawEntity, m_texture4, Vector3f(MathCalc::generateRandomFloat(-9.75f, 9.75f), 0.0f, MathCalc::generateRandomFloat(-9.75f, 9.75f)), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.25f, 3.0f, 0.25f)),
@@ -24,7 +24,7 @@ Game::Game(Window& window)
 	m_wall_4(m_rawEntity, m_texture2, Vector3f(0.0f, 0.0f, -10.25f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(10.0f, 1.0f, 0.25f)),
 	m_entityList{ &m_terrain, &m_player, &m_target, &m_wall_1, &m_wall_2, &m_wall_3, &m_wall_4 },
 	m_updatableList{ &m_camera, &m_frustum, &m_player },
-	m_collideableList{ &m_player, &m_target, &m_wall_1, &m_wall_2, &m_wall_3, &m_wall_4 },
+	m_collideableList{  &m_target, &m_player, &m_wall_1, &m_wall_2, &m_wall_3, &m_wall_4 },
 	m_rayCaster(m_camera, m_frustum),
 	m_inputHandler(window, m_updatableList)
 {
@@ -34,6 +34,8 @@ Game::Game(Window& window)
 
 void Game::update(float deltaTime)
 {
+	m_pythonExtension.callPythonAI(m_player, m_target, false);
+
 	for (IUpdatable* updatable : m_updatableList)
 		updatable->update(deltaTime);
 
@@ -42,7 +44,9 @@ void Game::update(float deltaTime)
 	Renderer::renderEntities(m_entityShaderProgram, m_camera, m_frustum, m_entityList);
 }
 
+// change inside of this
 void Game::onSuccess()
 {
-	std::cout << "congratz you won" << std::endl;
+	//std::cout << "congratz you won" << std::endl;
+	m_pythonExtension.callPythonAI(m_player, m_target, true);
 }

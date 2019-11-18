@@ -93,11 +93,11 @@ void Player::collisionResolution(Obstacle* obstacle)
 
 void Player::collisionResolution(Target* target)
 {
+	m_game->onSuccess();
+
 	setTranslationVector(Vector3f(0.0f, 0.0f, 0.0f));
 	m_aabb.update(*this);
 	m_eventHandler.getEventList().clear();
-
-	m_game->onSuccess();
 }
 
 AABB& Player::getAABB()

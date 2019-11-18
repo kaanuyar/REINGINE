@@ -4,6 +4,7 @@
 #include <vector>
 #include "Player.h"
 #include "Obstacle.h"
+#include "Target.h"
 
 class PythonExtension
 {
@@ -11,6 +12,7 @@ public:
 	PythonExtension();
 	~PythonExtension();
 
+	Vector3f callPythonAI(Player& player, Target& target, bool isGameOver);
 	Vector3f callPythonAI(Player& player, std::vector<Obstacle*>& walls);
 
 private:

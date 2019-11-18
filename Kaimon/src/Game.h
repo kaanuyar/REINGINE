@@ -52,4 +52,5 @@ private:
 
 	RayCaster m_rayCaster;
 	InputHandler m_inputHandler;
+	PythonExtension m_pythonExtension;
 };

@@ -27,6 +27,47 @@ PythonExtension::~PythonExtension()
 	Py_FinalizeEx();
 }
 
+Vector3f PythonExtension::callPythonAI(Player& player, Target& target, bool isGameOver)
+{
+	Vector3f vec;
+	if (m_pFunc && PyCallable_Check(m_pFunc))
+	{
+		PyObject* playerDict = PyDict_New();
+		PyObject* targetDict = PyDict_New();
+
+		insertKeyAndValuesToPyDict(playerDict, "playerMax", player.getAABB().getWorldMaxVertex());
+		insertKeyAndValuesToPyDict(playerDict, "playerMin", player.getAABB().getWorldMinVertex());
+
+		insertKeyAndValuesToPyDict(targetDict, "targetMax", target.getAABB().getWorldMaxVertex());
+		insertKeyAndValuesToPyDict(targetDict, "targetMin", target.getAABB().getWorldMinVertex());
+
+		PyObject* finalTuple = Py_BuildValue("{s:O,s:O,s:O}", "player", playerDict, "target", targetDict, "isGameOver", isGameOver ? Py_True : Py_False);
+		Py_DECREF(playerDict);
+		Py_DECREF(targetDict);
+
+		PyObject* argList = Py_BuildValue("(O)", finalTuple);
+		PyObject* pValue = PyObject_CallObject(m_pFunc, argList);
+		Py_DECREF(finalTuple);
+
+		if (pValue != NULL && PyList_Check(pValue) && PyList_Size(pValue) == 3)
+		{
+			float x = float(PyFloat_AsDouble(PyList_GetItem(pValue, 0)));
+			float y = float(PyFloat_AsDouble(PyList_GetItem(pValue, 1)));
+			float z = float(PyFloat_AsDouble(PyList_GetItem(pValue, 2)));
+
+			vec = Vector3f(x, y, z);
+			//printf("Result of call: %lf %lf %lf\n", vec.x, vec.y, vec.z);
+			Py_DECREF(pValue);
+		}
+		else
+			PyErr_Print();
+	}
+	else
+		PyErr_Print();
+
+	return vec;
+}
+
 Vector3f PythonExtension::callPythonAI(Player& player, std::vector<Obstacle*>& walls)
 {
 	Vector3f vec;
@@ -53,7 +94,7 @@ Vector3f PythonExtension::callPythonAI(Player& player, std::vector<Obstacle*>& w
 		Py_DECREF(playerDict);
 		Py_DECREF(wallList);
 
-		PyObject *arglist = Py_BuildValue("(O)", finalTuple);
+		PyObject* arglist = Py_BuildValue("(O)", finalTuple);
 		PyObject* pValue = PyObject_CallObject(m_pFunc, arglist);
 		Py_DECREF(finalTuple);
 
@@ -76,7 +117,7 @@ Vector3f PythonExtension::callPythonAI(Player& player, std::vector<Obstacle*>& w
 	return vec;
 }
 
-void PythonExtension::insertKeyAndValuesToPyDict(PyObject * dict, char * keyName, Vector3f valueVector)
+void PythonExtension::insertKeyAndValuesToPyDict(PyObject* dict, char* keyName, Vector3f valueVector)
 {
 	PyObject *pArgs = Py_BuildValue("(fff)", double(valueVector.x), double(valueVector.y), double(valueVector.z));
 	PyDict_SetItemString(dict, keyName, pArgs);
