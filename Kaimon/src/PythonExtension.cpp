@@ -119,7 +119,7 @@ Vector3f PythonExtension::callPythonAI(Player& player, std::vector<Obstacle*>& w
 
 void PythonExtension::insertKeyAndValuesToPyDict(PyObject* dict, char* keyName, Vector3f valueVector)
 {
-	PyObject *pArgs = Py_BuildValue("(fff)", double(valueVector.x), double(valueVector.y), double(valueVector.z));
+	PyObject *pArgs = Py_BuildValue("[fff]", double(valueVector.x), double(valueVector.y), double(valueVector.z));
 	PyDict_SetItemString(dict, keyName, pArgs);
 	Py_DECREF(pArgs);
 }

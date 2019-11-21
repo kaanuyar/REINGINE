@@ -14,6 +14,8 @@ public:
 	virtual void collisionResolution(Obstacle* obstacle);
 	virtual void collisionResolution(Target* target);
 
+	void restartPosition();
+
 	// for testing
 	AABB& getAABB();
 

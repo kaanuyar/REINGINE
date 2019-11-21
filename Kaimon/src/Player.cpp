@@ -44,11 +44,15 @@ void Player::update(float deltaTime)
 					it->isAlive = false;
 			}
 		}
+		else if (Event::MOVE_TO == it->state)
+		{
+			if (!moveTo(Vector3f(it->x, it->y, it->z), deltaTime))
+				it->isAlive = false;
+		}
 		else
 			it->isAlive = false;
 	}
 	m_eventHandler.deleteDeadEventsFromList();
-
 
 	m_aabb.update(*this);
 }
@@ -67,6 +71,13 @@ void Player::addRayCaster(RayCaster* rayCasterPtr)
 		m_hasRayCaster = true;
 	}
 
+}
+
+void Player::restartPosition()
+{
+	setTranslationVector(Vector3f(0.0f, 0.0f, 0.0f));
+	m_aabb.update(*this);
+	m_eventHandler.getEventList().clear();
 }
 
 
@@ -93,11 +104,7 @@ void Player::collisionResolution(Obstacle* obstacle)
 
 void Player::collisionResolution(Target* target)
 {
-	m_game->onSuccess();
-
-	setTranslationVector(Vector3f(0.0f, 0.0f, 0.0f));
-	m_aabb.update(*this);
-	m_eventHandler.getEventList().clear();
+	m_game->onSuccess(*this, *target);
 }
 
 AABB& Player::getAABB()

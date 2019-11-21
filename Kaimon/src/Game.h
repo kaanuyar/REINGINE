@@ -22,6 +22,7 @@
 #include "Player.h"
 #include "PythonExtension.h"
 #include "Target.h"
+#include "Timer.h"
 
 class Game
 {
@@ -29,7 +30,8 @@ public:
 	Game(Window& window);
 	void update(float deltaTime);
 	
-	void onSuccess();
+	void onSuccess(Player& player, Target& target);
+	void onRestart(Player& player, Target& target);
 private:
 	ViewFrustum m_frustum;
 	EntityShaderProgram m_entityShaderProgram;
@@ -53,4 +55,5 @@ private:
 	RayCaster m_rayCaster;
 	InputHandler m_inputHandler;
 	PythonExtension m_pythonExtension;
+	Timer m_timer;
 };

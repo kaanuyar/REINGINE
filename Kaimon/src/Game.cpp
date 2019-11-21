@@ -1,7 +1,5 @@
 #include "Game.h"
 
-#include <iostream>
-
 Game::Game(Window& window)
 	:
 	m_frustum((float)window.getWindowWidth(), (float)window.getWindowHeight(), 60.0f, 0.1f, 100.0f),
@@ -34,7 +32,12 @@ Game::Game(Window& window)
 
 void Game::update(float deltaTime)
 {
-	m_pythonExtension.callPythonAI(m_player, m_target, false);
+	if (m_timer.isDeltaTimeFromLastRestart(60.0f))
+		this->onRestart(m_player, m_target);
+
+	Vector3f vec = m_pythonExtension.callPythonAI(m_player, m_target, false);
+	//m_player.getEventHandler().addEventToList(Event(Event::MOVE_TO, false, vec.x, vec.y, vec.z));
+	//uncomment previous line for AI to work
 
 	for (IUpdatable* updatable : m_updatableList)
 		updatable->update(deltaTime);
@@ -44,9 +47,16 @@ void Game::update(float deltaTime)
 	Renderer::renderEntities(m_entityShaderProgram, m_camera, m_frustum, m_entityList);
 }
 
-// change inside of this
-void Game::onSuccess()
+
+void Game::onSuccess(Player& player, Target& target)
 {
-	//std::cout << "congratz you won" << std::endl;
 	m_pythonExtension.callPythonAI(m_player, m_target, true);
+	this->onRestart(player, target);
+}
+
+void Game::onRestart(Player& player, Target& target)
+{
+	player.restartPosition();
+	target.restartPosition();
+	m_timer.setLastRestartTimeToCurrentTime();
 }

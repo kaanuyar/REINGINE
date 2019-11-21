@@ -20,8 +20,6 @@ void Target::collisionResolution(ICollideable* collideable)
 
 void Target::collisionResolution(Player* player)
 {
-	setTranslationVector(Vector3f(MathCalc::generateRandomFloat(-9.75f, 9.75f), 0.0f, MathCalc::generateRandomFloat(-9.75f, 9.75f)));
-	m_aabb.update(*this);
 }
 
 void Target::collisionResolution(Obstacle* obstacle)
@@ -30,6 +28,15 @@ void Target::collisionResolution(Obstacle* obstacle)
 
 void Target::collisionResolution(Target* target)
 {
+}
+
+void Target::restartPosition()
+{
+	do    
+		setTranslationVector(Vector3f(MathCalc::generateRandomFloat(-9.75f, 9.75f), 0.0f, MathCalc::generateRandomFloat(-9.75f, 9.75f)));
+	while (getTranslationVector().x < 1.25f && getTranslationVector().x > -1.25f && getTranslationVector().z < 1.25f && getTranslationVector().z > -1.25f);
+
+	m_aabb.update(*this);
 }
 
 AABB& Target::getAABB()
