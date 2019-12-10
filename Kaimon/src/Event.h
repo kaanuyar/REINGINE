@@ -18,7 +18,8 @@ public:
 		KEY_R, 
 		KEY_UP, KEY_DOWN,
 		WINDOW_RESIZE,
-		MOVE_TO
+		MOVE_TO,
+		MOVE_TO_ANGLE
 	};
 
 	Event(State state, bool isAlive, float x = 0.0f, float y = 0.0f, float z = 0.0f) 

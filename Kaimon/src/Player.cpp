@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "Game.h"
 
+#include <cmath>
+
 Player::Player(Game* game, RawEntity & rawEntity, Texture & texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
 	: InteractableEntity(rawEntity, texture, worldTranslation, worldRotation, worldScale), m_aabb(getVertices()),
 		m_prevTranslationVector(worldTranslation.x, worldTranslation.y, worldTranslation.z), m_game(game)
@@ -48,6 +50,10 @@ void Player::update(float deltaTime)
 		{
 			if (!moveTo(Vector3f(it->x, it->y, it->z), deltaTime))
 				it->isAlive = false;
+		}
+		else if (Event::MOVE_TO_ANGLE == it->state)
+		{
+			moveToAngle(it->x, deltaTime);
 		}
 		else
 			it->isAlive = false;
@@ -161,4 +167,17 @@ bool Player::moveTo(Vector3f pos, float deltaTime)
 
 	increaseTranslationVector(normPos.x, normPos.y, normPos.z);
 	return true;
+}
+
+void Player::moveToAngle(float angleInDegrees, float deltaTime)
+{
+	constexpr double PI = 3.14159265358979323846;
+	Vector3f entityPos = getTranslationVector();
+	float x = float(cos(angleInDegrees * PI / 180.0));
+	float z = float(-sin(angleInDegrees * PI / 180.0));
+
+	float constant = 10.0f * deltaTime;
+	Vector3f normPos(constant * x, 0, constant * z);
+
+	increaseTranslationVector(normPos.x, normPos.y, normPos.z);
 }

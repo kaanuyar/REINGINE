@@ -4,4 +4,7 @@ import random
 def step(dic):
 	#print(dic)
 
-	return [random.randint(-10,10), 0, random.randint(-10,10)]
+	if dic["isGameOver"]:
+		print("Game is over :)")
+
+	return random.randint(0,360)

@@ -32,6 +32,7 @@ private:
 	void moveLeft(float deltaTime);
 	void rotateAroundYAxis(float deltaTime);
 	bool moveTo(Vector3f pos, float deltaTime);
+	void moveToAngle(float angleInDegrees, float deltaTime);
 
 	RayCaster* m_rayCasterPtr = nullptr;
 	bool m_hasRayCaster = false;

@@ -35,8 +35,8 @@ void Game::update(float deltaTime)
 	if (m_timer.isDeltaTimeFromLastRestart(60.0f))
 		this->onRestart(m_player, m_target);
 
-	Vector3f vec = m_pythonExtension.callPythonAI(m_player, m_target, false);
-	//m_player.getEventHandler().addEventToList(Event(Event::MOVE_TO, false, vec.x, vec.y, vec.z));
+	float angleInDegrees = m_pythonExtension.callPythonAI(m_player, m_target, false);
+	//m_player.getEventHandler().addEventToList(Event(Event::MOVE_TO_ANGLE, false, angleInDegrees));
 	//uncomment previous line for AI to work
 
 	for (IUpdatable* updatable : m_updatableList)

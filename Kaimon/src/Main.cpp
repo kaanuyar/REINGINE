@@ -7,13 +7,16 @@ int main()
 	Window window(800, 450, std::string("Kaimon"));
 	Game game(window);
 	Timer timer;
+	float systemDeltaTime = 0.0f;
 
 	while (!window.isWindowShouldClose())
 	{
-		float deltaTime = timer.getDeltaTime();
+		float deltaTime = timer.getDeltaTime() - systemDeltaTime;
 
-		game.update(deltaTime);
-		window.update();
+		if(!window.isWindowIconified())
+			game.update(deltaTime);
+
+		systemDeltaTime = window.update();
 	}
 
 	return 0;

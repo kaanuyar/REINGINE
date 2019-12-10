@@ -46,15 +46,29 @@ Window::~Window()
 }
 
 
-void Window::update()
+float Window::update()
 {
+	float startingTime = (float) glfwGetTime();
+
 	glfwSwapBuffers(m_window);
 	glfwPollEvents();
+
+	return (float) glfwGetTime() - startingTime;
 }
 
 bool Window::isWindowShouldClose()
 {
 	if (glfwWindowShouldClose(m_window))
+		return true;
+	else
+		return false;
+}
+
+bool Window::isWindowIconified()
+{
+	int iconified = glfwGetWindowAttrib(m_window, GLFW_ICONIFIED);
+
+	if (iconified)
 		return true;
 	else
 		return false;
