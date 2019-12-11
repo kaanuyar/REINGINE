@@ -12,7 +12,7 @@ public:
 	bool isWindowShouldClose();
 	bool isWindowIconified();
 	void windowShouldClose();
-	float update();
+	void update();
 	unsigned int getWindowHeight();
 	unsigned int getWindowWidth();
 	

@@ -39,6 +39,7 @@ void Game::update(float deltaTime)
 	//m_player.getEventHandler().addEventToList(Event(Event::MOVE_TO_ANGLE, false, angleInDegrees));
 	//uncomment previous line for AI to work
 
+
 	for (IUpdatable* updatable : m_updatableList)
 		updatable->update(deltaTime);
 
@@ -59,4 +60,9 @@ void Game::onRestart(Player& player, Target& target)
 	player.restartPosition();
 	target.restartPosition();
 	m_timer.setLastRestartTimeToCurrentTime();
+}
+
+InputHandler& Game::getInputHandler()
+{
+	return m_inputHandler;
 }

@@ -150,6 +150,7 @@
     <ClCompile Include="src\OBJLoader.cpp" />
     <ClCompile Include="src\Obstacle.cpp" />
     <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\Program.cpp" />
     <ClCompile Include="src\PythonExtension.cpp" />
     <ClCompile Include="src\RawEntity.cpp" />
     <ClCompile Include="src\RayCaster.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="src\OBJLoader.h" />
     <ClInclude Include="src\Obstacle.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\Program.h" />
     <ClInclude Include="src\PythonExtension.h" />
     <ClInclude Include="src\RawEntity.h" />
     <ClInclude Include="src\RayCaster.h" />

@@ -46,14 +46,10 @@ Window::~Window()
 }
 
 
-float Window::update()
+void Window::update()
 {
-	float startingTime = (float) glfwGetTime();
-
 	glfwSwapBuffers(m_window);
 	glfwPollEvents();
-
-	return (float) glfwGetTime() - startingTime;
 }
 
 bool Window::isWindowShouldClose()
@@ -117,7 +113,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 	InputHandler* inputHandler = static_cast<InputHandler*>(glfwGetWindowUserPointer(window));
 	inputHandler->mouse_button_callback(window, button, action, mods);
 }
-
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
