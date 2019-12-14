@@ -36,7 +36,7 @@ void Game::update(float deltaTime)
 		this->onRestart(m_player, m_target);
 
 	float angleInDegrees = m_pythonExtension.callPythonAI(m_player, m_target, false);
-	//m_player.getEventHandler().addEventToList(Event(Event::MOVE_TO_ANGLE, false, angleInDegrees));
+	m_player.getEventHandler().addEventToList(Event(Event::MOVE_TO_ANGLE, false, angleInDegrees));
 	//uncomment previous line for AI to work
 
 

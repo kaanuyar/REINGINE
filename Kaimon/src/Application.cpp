@@ -1,11 +1,11 @@
-#include "Program.h"
+#include "Application.h"
 
-Program::Program()
+Application::Application()
 	: m_window(800, 450, std::string("Kaimon")), m_game(m_window)
 {
 }
 
-void Program::runLoop()
+void Application::runLoop()
 {
 	while (!m_window.isWindowShouldClose())
 	{

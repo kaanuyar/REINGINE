@@ -4,10 +4,10 @@
 #include "Timer.h"
 #include "Game.h"
 
-class Program
+class Application
 {
 public:
-	Program();
+	Application();
 	void runLoop();
 
 private:

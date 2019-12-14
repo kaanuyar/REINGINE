@@ -1,9 +1,9 @@
-#include "Program.h"
+#include "Application.h"
 
 int main()
 {
-	Program program;
-	program.runLoop();
+	Application app;
+	app.runLoop();
 
 	return 0;
 }
