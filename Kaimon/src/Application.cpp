@@ -10,6 +10,7 @@ void Application::runLoop()
 	while (!m_window.isWindowShouldClose())
 	{
 		float deltaTime = m_timer.getDeltaTime();
+		m_timer.countDeltaTimeTowardsFPS(deltaTime);
 
 		if (deltaTime > 0.2f)
 			deltaTime = 0.2f;

@@ -17,7 +17,7 @@ public:
 	Vector3f callPythonAI(Player& player, std::vector<Obstacle*>& walls);
 
 private:
-	void insertKeyAndValuesToPyDict(PyObject* dict, char* keyName, Vector3f valueVector);
+	void insertKeyAndValuesToPyDict(PyObject* dict, const char* keyName, Vector3f valueVector);
 	PyObject* m_pModule;
 	PyObject* m_pFunc;
 };

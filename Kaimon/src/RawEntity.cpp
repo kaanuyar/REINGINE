@@ -79,12 +79,12 @@ void RawEntity::init2(std::vector<float>& vertices, std::vector<unsigned int>& i
 
 unsigned int RawEntity::vertexCount()
 {
-	return m_vertices.size();
+	return (unsigned int) m_vertices.size();
 }
 
 unsigned int RawEntity::indexCount()
 {
-	return m_indices.size();
+	return (unsigned int) m_indices.size();
 }
 
 unsigned int RawEntity::getVaoID()

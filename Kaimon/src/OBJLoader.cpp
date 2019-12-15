@@ -144,8 +144,8 @@ namespace
 
 		if (!flag)
 		{
-			indices.push_back(v.size());
-			vertex.duplicateIndices.push_back(v.size());
+			indices.push_back((unsigned int) v.size());
+			vertex.duplicateIndices.push_back((unsigned int) v.size());
 			Vertex newVertex = Vertex(vertex.position);
 			newVertex.textureIndex = textureIndex;
 			newVertex.normalIndex = normalIndex;
