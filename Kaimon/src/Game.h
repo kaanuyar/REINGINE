@@ -32,8 +32,6 @@ public:
 	
 	void onSuccess(Player& player, Target& target);
 	void onRestart(Player& player, Target& target);
-
-	InputHandler& getInputHandler();
 private:
 	ViewFrustum m_frustum;
 	EntityShaderProgram m_entityShaderProgram;

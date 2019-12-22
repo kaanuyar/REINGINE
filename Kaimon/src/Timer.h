@@ -1,6 +1,6 @@
 #pragma once
 #include <GLFW/glfw3.h>
-#include <iostream>
+#include <thread>
 
 class Timer
 {
@@ -9,6 +9,20 @@ public:
 	{
 		float currentFrameTime = float(glfwGetTime());
 		float deltaTime = currentFrameTime - m_lastFrameTime;
+		m_lastFrameTime = currentFrameTime;
+		return deltaTime;
+	}
+
+	float getDeltaTime(float deltaTimeLimit)
+	{
+		float currentFrameTime = float(glfwGetTime());
+		float deltaTime = currentFrameTime - m_lastFrameTime;
+		while (deltaTime < deltaTimeLimit)
+		{
+			std::this_thread::sleep_for(std::chrono::nanoseconds(1));
+			currentFrameTime = float(glfwGetTime());
+			deltaTime = currentFrameTime - m_lastFrameTime;
+		}
 		m_lastFrameTime = currentFrameTime;
 		return deltaTime;
 	}
@@ -34,17 +48,25 @@ public:
 			m_currentFPS = m_frameCounter;
 			m_frameCounter = 0;
 			m_frameCounterTime = 0.0f;
-
-			std::cout << "FPS: " << m_currentFPS << std::endl;
-			// comment previous line if you dont want to see FPS count spammed
 		}
+	}
+
+	bool returnEverySecond(float deltaTime)
+	{
+		m_everySecondTime += deltaTime;
+		if (m_everySecondTime  > 1.0f)
+		{
+			m_everySecondTime = 0.0f;
+			return true;
+		}
+		else
+			return false;
 	}
 
 	float getLastFrameTime() { return m_lastFrameTime; }
 	void setLastRestartTimeToCurrentTime() { m_lastRestartTime = float(glfwGetTime()); }
 
 	int getFPS() { return m_currentFPS; }
-	float getGameTime() { return (float) glfwGetTime(); }
 
 private:
 	float m_lastFrameTime = 0.0f;
@@ -53,4 +75,6 @@ private:
 	float m_frameCounterTime = 0.0f;
 	int m_frameCounter = 0;
 	int m_currentFPS = 0;
+
+	float m_everySecondTime = 0.0f;
 };
