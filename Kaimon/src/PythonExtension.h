@@ -12,9 +12,7 @@ public:
 	PythonExtension();
 	~PythonExtension();
 
-	//Vector3f callPythonAI(Player& player, Target& target, bool isGameOver);
-	float callPythonAI(Player& player, Target& target, bool isGameOver);
-	Vector3f callPythonAI(Player& player, std::vector<Obstacle*>& walls);
+	float callPythonAI(Player& player, Target& target, Obstacle& obstacle, bool isGameOver);
 
 private:
 	void insertKeyAndValuesToPyDict(PyObject* dict, const char* keyName, Vector3f valueVector);

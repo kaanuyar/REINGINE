@@ -30,8 +30,8 @@ public:
 	Game(Window& window);
 	void update(float deltaTime);
 	
-	void onSuccess(Player& player, Target& target);
-	void onRestart(Player& player, Target& target);
+	void onSuccess();
+	void onRestart();
 private:
 	ViewFrustum m_frustum;
 	EntityShaderProgram m_entityShaderProgram;
@@ -44,6 +44,7 @@ private:
 	Entity m_terrain;
 	Player m_player;
 	Obstacle m_wall_1, m_wall_2, m_wall_3, m_wall_4;
+	Obstacle m_barrier;
 	Target m_target;
 
 	std::vector<Entity*> m_entityList;

@@ -2,9 +2,9 @@
 #include "MathCalc.h"
 
 Target::Target(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
-	: CollideableEntity(rawEntity, texture, worldTranslation, worldRotation, worldScale), m_aabb(getVertices())
+	: CollideableEntity(rawEntity, texture, worldTranslation, worldRotation, worldScale), m_aabb(*this),
+	  m_edgeLengthVec(m_aabb.getWorldMaxVertex() - m_aabb.getWorldMinVertex())
 {
-	m_aabb.update(*this);
 }
 
 ICollider* Target::getCollider()
@@ -30,13 +30,14 @@ void Target::collisionResolution(Target* target)
 {
 }
 
-void Target::restartPosition()
+void Target::restartPosition(Player& player)
 {
-	do    
-		setTranslationVector(Vector3f(MathCalc::generateRandomFloat(-9.75f, 9.75f), 0.0f, MathCalc::generateRandomFloat(-9.75f, 9.75f)));
-	while (getTranslationVector().x < 1.25f && getTranslationVector().x > -1.25f && getTranslationVector().z < 1.25f && getTranslationVector().z > -1.25f);
-
-	m_aabb.update(*this);
+	do
+	{
+		setTranslationVector(Vector3f(MathCalc::generateRandomFloat(-10.0f + m_edgeLengthVec.x / 2, 10.0f - m_edgeLengthVec.x / 2), 0.0f, MathCalc::generateRandomFloat(-10.0f + m_edgeLengthVec.x / 2, 10.0f - m_edgeLengthVec.x / 2)));
+		m_aabb.update(*this);
+	}
+	while (CollisionManager::checkCollisionsBool({this, &player}));
 }
 
 AABB& Target::getAABB()

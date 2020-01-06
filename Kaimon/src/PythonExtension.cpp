@@ -27,54 +27,14 @@ PythonExtension::~PythonExtension()
 	Py_FinalizeEx();
 }
 
-/*Vector3f PythonExtension::callPythonAI(Player& player, Target& target, bool isGameOver)
-{
-	Vector3f vec;
-	if (m_pFunc && PyCallable_Check(m_pFunc))
-	{
-		PyObject* playerDict = PyDict_New();
-		PyObject* targetDict = PyDict_New();
-
-		insertKeyAndValuesToPyDict(playerDict, "playerMax", player.getAABB().getWorldMaxVertex());
-		insertKeyAndValuesToPyDict(playerDict, "playerMin", player.getAABB().getWorldMinVertex());
-
-		insertKeyAndValuesToPyDict(targetDict, "targetMax", target.getAABB().getWorldMaxVertex());
-		insertKeyAndValuesToPyDict(targetDict, "targetMin", target.getAABB().getWorldMinVertex());
-
-		PyObject* finalTuple = Py_BuildValue("{s:O,s:O,s:O}", "player", playerDict, "target", targetDict, "isGameOver", isGameOver ? Py_True : Py_False);
-		Py_DECREF(playerDict);
-		Py_DECREF(targetDict);
-
-		PyObject* argList = Py_BuildValue("(O)", finalTuple);
-		PyObject* pValue = PyObject_CallObject(m_pFunc, argList);
-		Py_DECREF(finalTuple);
-
-		if (pValue != NULL && PyList_Check(pValue) && PyList_Size(pValue) == 3)
-		{
-			float x = float(PyFloat_AsDouble(PyList_GetItem(pValue, 0)));
-			float y = float(PyFloat_AsDouble(PyList_GetItem(pValue, 1)));
-			float z = float(PyFloat_AsDouble(PyList_GetItem(pValue, 2)));
-
-			vec = Vector3f(x, y, z);
-			//printf("Result of call: %lf %lf %lf\n", vec.x, vec.y, vec.z);
-			Py_DECREF(pValue);
-		}
-		else
-			PyErr_Print();
-	}
-	else
-		PyErr_Print();
-
-	return vec;
-}*/
-
-float PythonExtension::callPythonAI(Player& player, Target& target, bool isGameOver)
+float PythonExtension::callPythonAI(Player& player, Target& target, Obstacle& obstacle, bool isGameOver)
 {
 	float angleInDegrees = -1.0f;
 	if (m_pFunc && PyCallable_Check(m_pFunc))
 	{
 		PyObject* playerDict = PyDict_New();
 		PyObject* targetDict = PyDict_New();
+		PyObject* obstacleDict = PyDict_New();
 
 		insertKeyAndValuesToPyDict(playerDict, "playerMax", player.getAABB().getWorldMaxVertex());
 		insertKeyAndValuesToPyDict(playerDict, "playerMin", player.getAABB().getWorldMinVertex());
@@ -82,9 +42,14 @@ float PythonExtension::callPythonAI(Player& player, Target& target, bool isGameO
 		insertKeyAndValuesToPyDict(targetDict, "targetMax", target.getAABB().getWorldMaxVertex());
 		insertKeyAndValuesToPyDict(targetDict, "targetMin", target.getAABB().getWorldMinVertex());
 
-		PyObject* finalTuple = Py_BuildValue("{s:O,s:O,s:O}", "player", playerDict, "target", targetDict, "isGameOver", isGameOver ? Py_True : Py_False);
+		insertKeyAndValuesToPyDict(obstacleDict, "obstacleMax", obstacle.getAABB().getWorldMaxVertex());
+		insertKeyAndValuesToPyDict(obstacleDict, "obstacleMin", obstacle.getAABB().getWorldMinVertex());
+
+
+		PyObject* finalTuple = Py_BuildValue("{s:O,s:O,s:O,s:O}", "player", playerDict, "target", targetDict, "obstacle", obstacleDict, "isGameOver", isGameOver ? Py_True : Py_False);
 		Py_DECREF(playerDict);
 		Py_DECREF(targetDict);
+		Py_DECREF(obstacleDict);
 
 		PyObject* argList = Py_BuildValue("(O)", finalTuple);
 		PyObject* pValue = PyObject_CallObject(m_pFunc, argList);

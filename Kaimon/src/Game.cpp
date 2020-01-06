@@ -20,9 +20,10 @@ Game::Game(Window& window)
 	m_wall_2(m_rawEntity, m_texture2, Vector3f(-10.25f, 0.0f, 0.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.25f, 1.0f, 10.0f)),
 	m_wall_3(m_rawEntity, m_texture2, Vector3f(0.0f, 0.0f, 10.25f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(10.0f, 1.0f, 0.25f)),
 	m_wall_4(m_rawEntity, m_texture2, Vector3f(0.0f, 0.0f, -10.25f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(10.0f, 1.0f, 0.25f)),
-	m_entityList{ &m_terrain, &m_player, &m_target, &m_wall_1, &m_wall_2, &m_wall_3, &m_wall_4 },
+	m_barrier(m_rawEntity, m_texture2, Vector3f(0.0f, 0.0f, -3.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(7.0f, 1.0f, 0.25f)),
+	m_entityList{ &m_terrain, &m_player, &m_target, &m_wall_1, &m_wall_2, &m_wall_3, &m_wall_4, &m_barrier },
 	m_updatableList{ &m_camera, &m_frustum, &m_player },
-	m_collideableList{  &m_target, &m_player, &m_wall_1, &m_wall_2, &m_wall_3, &m_wall_4 },
+	m_collideableList{  &m_target, &m_player, &m_wall_1, &m_wall_2, &m_wall_3, &m_wall_4, &m_barrier },
 	m_rayCaster(m_camera, m_frustum),
 	m_inputHandler(window, m_updatableList)
 {
@@ -32,32 +33,30 @@ Game::Game(Window& window)
 
 void Game::update(float deltaTime)
 {
-	if (m_timer.isDeltaTimeFromLastRestart(60.0f))
-		this->onRestart(m_player, m_target);
+	if (m_timer.isDeltaTimeFromLastRestart(10.0f))
+		this->onRestart();
 
-	float angleInDegrees = m_pythonExtension.callPythonAI(m_player, m_target, false);
+	float angleInDegrees = m_pythonExtension.callPythonAI(m_player, m_target, m_barrier, false);
 	m_player.getEventHandler().addEventToList(Event(Event::MOVE_TO_ANGLE, false, angleInDegrees));
 	//uncomment previous line for AI to work
-	//m_player.getEventHandler().addEventToList(Event(Event::MOVE_TO, false, m_target.getTranslationVector().x, m_target.getTranslationVector().y, m_target.getTranslationVector().z));
 
 	for (IUpdatable* updatable : m_updatableList)
 		updatable->update(deltaTime);
 
 	CollisionManager::checkCollisions(m_collideableList);
-
 	Renderer::renderEntities(m_entityShaderProgram, m_camera, m_frustum, m_entityList);
 }
 
-
-void Game::onSuccess(Player& player, Target& target)
+void Game::onSuccess()
 {
-	m_pythonExtension.callPythonAI(m_player, m_target, true);
-	this->onRestart(player, target);
+	m_pythonExtension.callPythonAI(m_player, m_target, m_barrier, true);
+	this->onRestart();
 }
 
-void Game::onRestart(Player& player, Target& target)
+void Game::onRestart()
 {
-	player.restartPosition();
-	target.restartPosition();
+	m_player.restartPosition();
+	m_target.restartPosition(m_player);
+	m_barrier.restartPosition(m_player, m_target);
 	m_timer.setLastRestartTimeToCurrentTime();
 }

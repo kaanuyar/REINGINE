@@ -7,7 +7,7 @@
 class AABB : public ICollider
 {
 public:
-	AABB(std::vector<float>& vertices);
+	AABB(Entity& entity);
 	void update(Entity& entity);
 
 	bool collideWith(ICollider* collider);

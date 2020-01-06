@@ -2,9 +2,10 @@
 
 #include "MathCalc.h"
 
-AABB::AABB(std::vector<float>& vertices)
+AABB::AABB(Entity& entity)
 {
-	calculateBoundingBox(vertices);
+	calculateBoundingBox(entity.getVertices());
+	this->update(entity);
 	// add update method here for the creation this shit is stupid is hell and give entity to this function not vertices :)
 }
 

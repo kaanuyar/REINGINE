@@ -2,6 +2,9 @@
 
 #include "AABB.h"
 #include "CollideableEntity.h"
+#include "CollisionManager.h"
+#include "Player.h"
+#include "Target.h"
 
 class Obstacle : public CollideableEntity
 {
@@ -14,9 +17,12 @@ public:
 	virtual void collisionResolution(Obstacle* obstacle);
 	virtual void collisionResolution(Target* target);
 
+	void restartPosition(Player& player, Target& target);
+
 	// for testing
 	AABB& getAABB();
 
 private:
 	AABB m_aabb;
+	Vector3f m_edgeLengthVec;
 };
