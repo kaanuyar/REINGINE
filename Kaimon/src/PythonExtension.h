@@ -12,7 +12,7 @@ public:
 	PythonExtension();
 	~PythonExtension();
 
-	float callPythonAI(Player& player, Target& target, Obstacle& obstacle, bool isGameOver);
+	float callPythonAI(Player& player, Target& target, Obstacle& obstacle, bool isGameOver, bool isGameRestart);
 
 private:
 	void insertKeyAndValuesToPyDict(PyObject* dict, const char* keyName, Vector3f valueVector);

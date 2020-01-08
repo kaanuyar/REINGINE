@@ -27,7 +27,7 @@ PythonExtension::~PythonExtension()
 	Py_FinalizeEx();
 }
 
-float PythonExtension::callPythonAI(Player& player, Target& target, Obstacle& obstacle, bool isGameOver)
+float PythonExtension::callPythonAI(Player & player, Target & target, Obstacle & obstacle, bool isGameOver, bool isGameRestart)
 {
 	float angleInDegrees = -1.0f;
 	if (m_pFunc && PyCallable_Check(m_pFunc))
@@ -46,7 +46,7 @@ float PythonExtension::callPythonAI(Player& player, Target& target, Obstacle& ob
 		insertKeyAndValuesToPyDict(obstacleDict, "obstacleMin", obstacle.getAABB().getWorldMinVertex());
 
 
-		PyObject* finalTuple = Py_BuildValue("{s:O,s:O,s:O,s:O}", "player", playerDict, "target", targetDict, "obstacle", obstacleDict, "isGameOver", isGameOver ? Py_True : Py_False);
+		PyObject* finalTuple = Py_BuildValue("{s:O,s:O,s:O,s:O,s:O}", "player", playerDict, "target", targetDict, "obstacle", obstacleDict, "isGameOver", isGameOver ? Py_True : Py_False, "isGameRestart", isGameRestart ? Py_True : Py_False);
 		Py_DECREF(playerDict);
 		Py_DECREF(targetDict);
 		Py_DECREF(obstacleDict);
@@ -58,7 +58,7 @@ float PythonExtension::callPythonAI(Player& player, Target& target, Obstacle& ob
 
 		if (pValue != NULL)
 		{
-			angleInDegrees = (float) PyFloat_AsDouble(pValue);
+			angleInDegrees = (float)PyFloat_AsDouble(pValue);
 			//printf("Result of call: %lf %lf %lf\n", vec.x, vec.y, vec.z);
 			Py_DECREF(pValue);
 		}

@@ -31,6 +31,7 @@ public:
 	void update(float deltaTime);
 	
 	void onSuccess();
+	void onFailure();
 	void onRestart();
 private:
 	ViewFrustum m_frustum;
