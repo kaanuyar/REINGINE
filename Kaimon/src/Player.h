@@ -18,7 +18,7 @@ public:
 	virtual void collisionResolution(Target* target);
 
 	void addRayCaster(RayCaster* rayCasterPtr);
-	void restartPosition();
+	void restartPosition(Vector3f terrainMinVec, Vector3f terrainMaxVec);
 
 	// for testing 
 	AABB& getAABB();

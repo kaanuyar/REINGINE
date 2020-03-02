@@ -30,6 +30,10 @@ Window::Window(int windowWidth, int windowHeight, std::string windowName)
 	glfwSetCursorPosCallback(m_window, cursor_position_callback);
 	glfwSetScrollCallback(m_window, scroll_callback);
 	glfwSetMouseButtonCallback(m_window, mouse_button_callback);
+
+	// vsync setting if 1 vsync on, if 0 vsync off
+	glfwSwapInterval(0);
+
 	// glad: load all OpenGL function pointers
 	// ---------------------------------------
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))

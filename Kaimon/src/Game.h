@@ -39,7 +39,7 @@ private:
 	Camera m_camera;
 	Light m_light;
 
-	RawEntity m_rawEntity, m_rawEntity2, m_rawTerrain;
+	RawEntity m_rawEntity, m_rawEntity2, m_rawEntity3;
 	Texture m_texture1, m_texture2, m_texture3, m_texture4;
 
 	Entity m_terrain;
@@ -52,10 +52,12 @@ private:
 	std::vector<IUpdatable*> m_updatableList;
 	std::vector<ICollideable*> m_collideableList;
 
-	//std::vector<Obstacle*> m_obstacleList;
-
 	RayCaster m_rayCaster;
 	InputHandler m_inputHandler;
-	PythonExtension m_pythonExtension;
+	//PythonExtension m_pythonExtension;
 	Timer m_timer;
+
+	// Constants
+	const Vector3f TERRAIN_MAX_VEC { -10.0f, 0.0f, -10.0f };
+	const Vector3f TERRAIN_MIN_VEC { 10.0f, 0.0f, 10.0f };
 };

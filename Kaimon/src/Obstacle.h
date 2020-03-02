@@ -17,7 +17,7 @@ public:
 	virtual void collisionResolution(Obstacle* obstacle);
 	virtual void collisionResolution(Target* target);
 
-	void restartPosition(Player& player, Target& target);
+	void restartPosition(Vector3f terrainMinVec, Vector3f terrainMaxVec);
 
 	// for testing
 	AABB& getAABB();
