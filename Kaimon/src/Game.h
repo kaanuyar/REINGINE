@@ -54,10 +54,10 @@ private:
 
 	RayCaster m_rayCaster;
 	InputHandler m_inputHandler;
-	//PythonExtension m_pythonExtension;
+	PythonExtension m_pythonExtension;
 	Timer m_timer;
 
 	// Constants
-	const Vector3f TERRAIN_MAX_VEC { -10.0f, 0.0f, -10.0f };
-	const Vector3f TERRAIN_MIN_VEC { 10.0f, 0.0f, 10.0f };
+	const Vector3f TERRAIN_MAX_VEC { -5.0f, 0.0f, -5.0f };
+	const Vector3f TERRAIN_MIN_VEC { 5.0f, 0.0f, 5.0f };
 };

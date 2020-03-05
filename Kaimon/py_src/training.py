@@ -14,8 +14,9 @@ from utils import get_obs,load_models
 
 
 #Load model
-net=load_models("REINGINE-checkpoint.dat")
-
+net=load_models("py_src/models/REINGINE-checkpoint.dat")
+a=10
+action=None
 def step(state_dic):
     """
     Parameters
@@ -28,16 +29,19 @@ def step(state_dic):
     Action: angle
 
     """
-    global net
+    global net,a,action
     
-
-    state=get_obs(state_dic)[0:-1]
+    if a==10:
+        state,done=get_obs(state_dic)
     
-    state_v = torch.tensor(np.array([sum(state,[])], copy=False))
-    q_vals = net(state_v).data.numpy()[0]
-    action = np.argmax(q_vals)
+        state=sum(state,[])
     
+        state_v = torch.tensor(np.array([state], copy=False))
+        q_vals = net(state_v).data.numpy()[0]
+        action = np.argmax(q_vals)
+        a=0
     
+    a+=1
     return action
     
     

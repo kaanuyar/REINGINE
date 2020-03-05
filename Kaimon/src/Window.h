@@ -6,7 +6,7 @@
 class Window
 {
 public:
-	Window(int width, int height, std::string windowName);
+	Window(int width, int height, std::string windowName, bool vsyncOnOff);
 	~Window();
 	GLFWwindow* getWindow();
 	bool isWindowShouldClose();

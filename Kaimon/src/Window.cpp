@@ -8,7 +8,7 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
-Window::Window(int windowWidth, int windowHeight, std::string windowName)
+Window::Window(int windowWidth, int windowHeight, std::string windowName, bool vsyncOnOff)
 	: m_windowHeight(windowHeight), m_windowWidth(windowWidth)
 {
 	// glfw: initialize and configure
@@ -32,7 +32,7 @@ Window::Window(int windowWidth, int windowHeight, std::string windowName)
 	glfwSetMouseButtonCallback(m_window, mouse_button_callback);
 
 	// vsync setting if 1 vsync on, if 0 vsync off
-	glfwSwapInterval(0);
+	glfwSwapInterval((int) vsyncOnOff);
 
 	// glad: load all OpenGL function pointers
 	// ---------------------------------------
