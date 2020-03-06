@@ -11,7 +11,8 @@ public:
 	virtual ~Entity();
 	unsigned int getVaoID();
 	unsigned int getTextureID();
-	unsigned int getTextureUnit();
+	std::string getTexturePath();
+	Texture::Type getTextureType();
 	void increaseTranslationVector(float dx, float dy, float dz);
 	void increaseRotationVector(float dx, float dy, float dz);
 	void setTranslationVector(Vector3f vec);

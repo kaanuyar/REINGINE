@@ -49,12 +49,18 @@ unsigned int Entity::getVaoID()
 
 unsigned int Entity::getTextureID()
 {
-	return m_texture.getTextureID();
+	return m_texture.getID();
 }
 
-unsigned int Entity::getTextureUnit()
+
+std::string Entity::getTexturePath()
 {
-	return m_texture.getTextureUnit();
+	return m_texture.getPath();
+}
+
+Texture::Type Entity::getTextureType()
+{
+	return m_texture.getType();
 }
 
 unsigned int Entity::getIndexCount()

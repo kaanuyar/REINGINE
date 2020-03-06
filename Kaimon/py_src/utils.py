@@ -9,7 +9,7 @@ import os
 import torch
 def load_models(path,training=False,device="cpu"):
     
-    net = dqn_model.DQN(18, 360)
+    net = dqn_model.DQN(12, 360)
 
     if os.path.exists(path):
         print("DOSYA BULUNDU. AĞ AĞIRLIKLARI DOSYADAN ÇEKİLİYOR...")
@@ -21,7 +21,7 @@ def load_models(path,training=False,device="cpu"):
         
     if training:
  
-        return net.to(device),dqn_model.DQN(18, 360).to(device)
+        return net.to(device),dqn_model.DQN(12, 360).to(device)
     
     return net.to(device)
 
@@ -44,7 +44,12 @@ def get_obs(state_dic):
     target_max=target["targetMax"]
     obs_min=obs["obstacleMin"]
     obs_max=obs["obstacleMax"]
-    
+    player_min=[player_min[0],player_min[2]]
+    player_max=[player_max[0],player_max[2]]
+    target_min=[target_min[0],target_min[2]]
+    target_max=[target_max[0],target_max[2]]
+    obs_min=[obs_min[0],obs_min[2]]
+    obs_max=[obs_max[0],obs_max[2]]
     result.append(player_min)
     result.append(player_max)
     result.append(target_min)

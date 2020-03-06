@@ -4,13 +4,22 @@
 class Texture
 {
 public:
-	Texture(std::string texturePath, unsigned int textureUnit);
+	enum Type : int
+	{
+		TEXTURE_DIFFUSE = 0,
+		TEXTURE_NORMAL,
+		TEXTURE_SPECULAR
+	};
+
+	Texture(std::string texturePath, Type textureType);
 	~Texture();
-	unsigned int getTextureUnit();
-	unsigned int getTextureID();
+	unsigned int getID();
+	std::string getPath();
+	Type getType();
 
 private:
-	void init(std::string& texturePath, unsigned int textureUnit);
-	unsigned int m_textureID;
-	unsigned int m_textureUnit;
+	void init(std::string& texturePath);
+	unsigned int m_id;
+	Type m_type;
+	std::string m_path;
 };

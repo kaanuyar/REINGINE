@@ -31,17 +31,17 @@ def step(state_dic):
     """
     global net,a,action
     
-    if a==10:
-        state,done=get_obs(state_dic)
     
-        state=sum(state,[])
+    state,done=get_obs(state_dic)
+
+    state=sum(state,[])
+
+    state_v = torch.tensor(np.array([state], copy=False))
+    q_vals = net(state_v).data.numpy()[0]
+    action = np.argmax(q_vals)
+        
     
-        state_v = torch.tensor(np.array([state], copy=False))
-        q_vals = net(state_v).data.numpy()[0]
-        action = np.argmax(q_vals)
-        a=0
     
-    a+=1
     return action
     
     

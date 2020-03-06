@@ -54,7 +54,7 @@ private:
 
 	RayCaster m_rayCaster;
 	InputHandler m_inputHandler;
-	PythonExtension m_pythonExtension;
+	//PythonExtension m_pythonExtension;
 	Timer m_timer;
 
 	// Constants

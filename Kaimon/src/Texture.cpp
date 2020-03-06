@@ -5,22 +5,21 @@
 #include "Texture.h"
 #include <GLAD/glad.h>
 
-Texture::Texture(std::string texturePath, unsigned int textureUnit)
-	: m_textureID{ 0 }, m_textureUnit(textureUnit)
+Texture::Texture(std::string texturePath, Type textureType)
+	: m_id{ 0 }, m_path(texturePath), m_type(textureType)
 {
-	init(texturePath, textureUnit);
+	init(texturePath);
 }
 
 Texture::~Texture()
 {
-	glDeleteTextures(1, &m_textureID);
+	glDeleteTextures(1, &m_id);
 }
 
-void Texture::init(std::string& texturePath, unsigned int textureUnit)
+void Texture::init(std::string& texturePath)
 {
-	glGenTextures(1, &m_textureID);
-	glActiveTexture(GL_TEXTURE0 + textureUnit);
-	glBindTexture(GL_TEXTURE_2D, m_textureID);
+	glGenTextures(1, &m_id);
+	glBindTexture(GL_TEXTURE_2D, m_id);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -51,12 +50,18 @@ void Texture::init(std::string& texturePath, unsigned int textureUnit)
 
 }
 
-unsigned int Texture::getTextureUnit()
+
+unsigned int Texture::getID()
 {
-	return m_textureUnit;
+	return m_id;
 }
 
-unsigned int Texture::getTextureID()
+std::string Texture::getPath()
 {
-	return m_textureID;
+	return m_path;
+}
+
+Texture::Type Texture::getType()
+{
+	return m_type;
 }

@@ -20,7 +20,7 @@ public:
 		if (this->x == vec.x && this->y == vec.y && this->z == vec.z)
 			return true;
 		else
-			false;
+			return false;
 	}
 
 	// add substraction and addition method ex: vector3f + vector3f

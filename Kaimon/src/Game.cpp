@@ -9,10 +9,10 @@ Game::Game(Window& window)
 	m_rawEntity(OBJLoader::loadFile("res/models/wallCube2.obj")),
 	m_rawEntity2(OBJLoader::loadFile("res/models/tree.obj")),
 	m_rawEntity3(Terrain::createTerrain(5, 5)),
-	m_texture1("res/textures/checker128.png", 0),
-	m_texture2("res/textures/gray.png", 1),
-	m_texture3("res/textures/reddish.png", 2),
-	m_texture4("res/textures/green.png", 3),
+	m_texture1("res/textures/checker128.png", Texture::Type::TEXTURE_DIFFUSE),
+	m_texture2("res/textures/gray.png", Texture::Type::TEXTURE_DIFFUSE),
+	m_texture3("res/textures/reddish.png", Texture::Type::TEXTURE_DIFFUSE),
+	m_texture4("res/textures/green.png", Texture::Type::TEXTURE_DIFFUSE),
 	m_player(this, m_rawEntity, m_texture3, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(1.0f, 1.0f, 1.0f)),
 	m_terrain(m_rawEntity3, m_texture1, Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(1.0f, 1.0f, 1.0f)),
 	m_target(m_rawEntity, m_texture4, Vector3f(0.0f, 0.0f, -4.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.25f, 3.0f, 0.25f)),
@@ -33,11 +33,11 @@ Game::Game(Window& window)
 
 void Game::update(float deltaTime)
 {
-	if (m_timer.isDeltaTimeFromLastRestart(10.0f))
+	if (m_timer.isDeltaTimeFromLastRestart(5.0f))
 		this->onFailure();
 
-	float angleInDegrees = m_pythonExtension.callPythonAI(m_player, m_target, m_barrier, false, false);
-	m_player.getEventHandler().addEventToList(Event(Event::MOVE_TO_ANGLE, false, angleInDegrees));
+	//float angleInDegrees = m_pythonExtension.callPythonAI(m_player, m_target, m_barrier, false, false);
+	//m_player.getEventHandler().addEventToList(Event(Event::MOVE_TO_ANGLE, false, angleInDegrees));
 	//uncomment previous line for AI to work
 
 	for (IUpdatable* updatable : m_updatableList)
@@ -49,13 +49,13 @@ void Game::update(float deltaTime)
 
 void Game::onSuccess()
 {
-	m_pythonExtension.callPythonAI(m_player, m_target, m_barrier, true, false);
+	//m_pythonExtension.callPythonAI(m_player, m_target, m_barrier, true, false);
 	this->onRestart();
 }
 
 void Game::onFailure()
 {
-	m_pythonExtension.callPythonAI(m_player, m_target, m_barrier, false, true);
+	//m_pythonExtension.callPythonAI(m_player, m_target, m_barrier, false, true);
 	this->onRestart();
 }
 

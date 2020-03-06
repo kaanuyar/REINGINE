@@ -24,7 +24,7 @@ PythonExtension::~PythonExtension()
 	Py_XDECREF(m_pFunc);
 	Py_DECREF(m_pModule);
 
-	Py_FinalizeEx();
+	Py_Finalize();
 }
 
 float PythonExtension::callPythonAI(Player & player, Target & target, Obstacle & obstacle, bool isGameOver, bool isGameRestart)
