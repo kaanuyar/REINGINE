@@ -22,6 +22,7 @@ public:
 	unsigned int getIndexCount();
 	unsigned int getVertexCount();
 	std::vector<float>& getVertices();
+	RawEntity& getRawEntity();
 
 private:
 	RawEntity& m_rawEntity;

@@ -77,3 +77,8 @@ std::vector<float>& Entity::getVertices()
 {
 	return m_rawEntity.getVertices();
 }
+
+RawEntity& Entity::getRawEntity()
+{
+	return m_rawEntity;
+}
