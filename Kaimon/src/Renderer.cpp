@@ -12,24 +12,47 @@ void Renderer::renderEntities(EntityShaderProgram& entityShaderProgram, Camera& 
 	entityShaderProgram.loadViewPos(camera);
 	entityShaderProgram.loadViewMatrix(camera);
 
-	std::vector<std::string> texturePathList;
-	int index = 0;
+	//std::unordered_map<RawEntity*, std::vector<Entity*>> umap = processEntity(entityList);
+
+	//for (auto it = umap.begin(); it != umap.end(); ++it)
+	//{
+	//	RawEntity* entity = it->first;
+
+	//	glActiveTexture(GL_TEXTURE0); // active proper texture unit before binding
+	//	glBindTexture(GL_TEXTURE_2D, entity->getTextureID());
+	//	entityShaderProgram.loadTexture(0);
+	//	glBindVertexArray(entity->getVaoID());
+
+	//}
+
 	for (Entity* entity : entityList)
 	{
 		entityShaderProgram.loadTransformationMatrix(*entity);
-		if (std::find(texturePathList.begin(), texturePathList.end(), entity->getTexturePath()) == texturePathList.end())
-		{
-			glActiveTexture(GL_TEXTURE0 + index); // active proper texture unit before binding
-			glBindTexture(GL_TEXTURE_2D, entity->getTextureID());
-			entityShaderProgram.loadTexture(index);
-			texturePathList.push_back(entity->getTexturePath());
-			index++;
-		}
+		entityShaderProgram.loadTexture(0);
+		glActiveTexture(GL_TEXTURE0); // active proper texture unit before binding
+		glBindTexture(GL_TEXTURE_2D, entity->getTextureID());
 
 		glBindVertexArray(entity->getVaoID());
 		glDrawElements(GL_TRIANGLES, entity->getIndexCount(), GL_UNSIGNED_INT, 0);
 	}
 
 	entityShaderProgram.stopProgram();
+}
+
+std::unordered_map<RawEntity*, std::vector<Entity*>> Renderer::processEntity(std::vector<Entity*>& entityList)
+{
+	std::unordered_map<RawEntity*, std::vector<Entity*>> umap;
+
+	for (Entity* entity : entityList)
+	{
+		RawEntity& rawEntity = entity->getRawEntity();
+
+		if (umap.find(&rawEntity) == umap.end())
+			umap[&rawEntity] = { entity };
+		else
+			umap[&rawEntity].push_back(entity);
+	}
+
+	return umap;
 }
 

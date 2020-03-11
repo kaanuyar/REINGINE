@@ -8,7 +8,8 @@ public:
 	{
 		TEXTURE_DIFFUSE = 0,
 		TEXTURE_NORMAL,
-		TEXTURE_SPECULAR
+		TEXTURE_SPECULAR,
+		TEXTURE_HEIGHT
 	};
 
 	Texture(std::string texturePath, Type textureType);
