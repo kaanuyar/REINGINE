@@ -23,8 +23,6 @@
 #include "PythonExtension.h"
 #include "Target.h"
 #include "Timer.h"
-#include "Model.h"
-#include "Mesh.h"
 
 class Game
 {
