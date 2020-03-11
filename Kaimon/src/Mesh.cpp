@@ -1,17 +1,14 @@
 #include "Mesh.h"
 
-Mesh::Mesh(std::vector<Vertx> vertices, std::vector<unsigned int> indices, std::vector<Texture*> textures)
+Mesh::Mesh(std::vector<Vertx> vertices, std::vector<unsigned int> indices, std::vector<std::unique_ptr<Texture>> textures)
+	: m_vertices(vertices), m_indices(indices), m_textures(std::move(textures))
 {
-	m_vertices = vertices;
-	m_indices = indices;
-	m_textures = textures;
-
-	// now that we have all the required data, set the vertex buffers and its attribute pointers.
 	setupMesh();
 }
 
 Mesh::~Mesh()
 {
+	std::cout << "mesh destroyed " << std::endl;
 	glDeleteVertexArrays(1, &m_VAO);
 	glDeleteBuffers(1, &m_VBO);
 	glDeleteBuffers(1, &m_EBO);
@@ -32,7 +29,7 @@ std::vector<unsigned int>& Mesh::getIndices()
 	return m_indices;
 }
 
-std::vector<Texture*>& Mesh::getTextures()
+std::vector<std::unique_ptr<Texture>>& Mesh::getTextures()
 {
 	return m_textures;
 }
@@ -58,12 +55,13 @@ void Mesh::setupMesh()
 	// vertex Positions
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertx), (void*)0);
-	// vertex normals
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertx), (void*)offsetof(Vertx, Normal));
 	// vertex texture coords
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertx), (void*)offsetof(Vertx, TexCoords));
+	// vertex normals
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertx), (void*)offsetof(Vertx, TexCoords));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertx), (void*)offsetof(Vertx, Normal));
+
 
 	glBindVertexArray(0);
 }
