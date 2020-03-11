@@ -1,8 +1,8 @@
 #include "Obstacle.h"
 #include "MathCalc.h"
 
-Obstacle::Obstacle(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
-	: CollideableEntity(rawEntity, texture, worldTranslation, worldRotation, worldScale), m_aabb(*this),
+Obstacle::Obstacle(Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
+	: CollideableEntity(model, worldTranslation, worldRotation, worldScale), m_aabb(*this),
 	  m_edgeLengthVec(m_aabb.getWorldMaxVertex() - m_aabb.getWorldMinVertex())
 {
 }

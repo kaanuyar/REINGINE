@@ -65,3 +65,15 @@ Texture::Type Texture::getType()
 {
 	return m_type;
 }
+
+std::string Texture::getTypeAsString()
+{
+	switch (m_type)
+	{
+		case Texture::Type::TEXTURE_DIFFUSE: return "texture_diffuse";
+		case Texture::Type::TEXTURE_SPECULAR: return "texture_specular";
+		case Texture::Type::TEXTURE_NORMAL: return "texture_normal";
+		case Texture::Type::TEXTURE_HEIGHT: return "texture_height";
+		default: return "unknown_type";
+	}
+}

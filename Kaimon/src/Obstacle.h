@@ -9,7 +9,7 @@
 class Obstacle : public CollideableEntity
 {
 public:
-	Obstacle(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
+	Obstacle(Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
 
 	virtual ICollider* getCollider();
 	virtual void collisionResolution(ICollideable* collideable);

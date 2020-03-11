@@ -23,6 +23,7 @@ public:
 	void setWorldMaxVertex(Vector3f vec);
 
 private:
+	void AABB::calculateBoundingBox(Model& model);
 	void calculateBoundingBox(std::vector<float>& vertices);
 
 	Vector3f m_localMinVertex;

@@ -17,6 +17,7 @@ public:
 	unsigned int getID();
 	std::string getPath();
 	Type getType();
+	std::string getTypeAsString();
 
 private:
 	void init(std::string& texturePath);

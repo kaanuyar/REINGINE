@@ -5,8 +5,9 @@
 class CollideableEntity : public Entity, public ICollideable
 {
 public:
-	CollideableEntity(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
+	CollideableEntity(Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
 
+	virtual ~CollideableEntity();
 	virtual ICollider* getCollider() = 0;
 	virtual void collisionResolution(ICollideable* collideable) = 0;
 	virtual void collisionResolution(Player* player) = 0;

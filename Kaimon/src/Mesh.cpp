@@ -8,7 +8,6 @@ Mesh::Mesh(std::vector<Vertx> vertices, std::vector<unsigned int> indices, std::
 
 Mesh::~Mesh()
 {
-	std::cout << "mesh destroyed " << std::endl;
 	glDeleteVertexArrays(1, &m_VAO);
 	glDeleteBuffers(1, &m_VBO);
 	glDeleteBuffers(1, &m_EBO);

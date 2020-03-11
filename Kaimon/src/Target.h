@@ -8,7 +8,7 @@
 class Target : public CollideableEntity
 {
 public:
-	Target(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
+	Target(Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
 
 	virtual ICollider* getCollider();
 	virtual void collisionResolution(ICollideable* collideable);

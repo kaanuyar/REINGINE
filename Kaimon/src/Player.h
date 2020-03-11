@@ -7,7 +7,7 @@ class Game;
 class Player : public InteractableEntity
 {
 public:
-	Player(Game* game, RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
+	Player(Game* game, Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
 	
 	virtual EventHandler& getEventHandler();
 	virtual void update(float deltaTime);

@@ -2,7 +2,11 @@
 
 #include <iostream>
 
-InteractableEntity::InteractableEntity(RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
-	: CollideableEntity(rawEntity, texture, worldTranslation, worldRotation, worldScale)
+InteractableEntity::InteractableEntity(Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
+	: CollideableEntity(model, worldTranslation, worldRotation, worldScale)
+{
+}
+
+InteractableEntity::~InteractableEntity()
 {
 }

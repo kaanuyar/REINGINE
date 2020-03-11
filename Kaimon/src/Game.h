@@ -41,14 +41,17 @@ private:
 	Camera m_camera;
 	Light m_light;
 
-	RawEntity m_rawEntity, m_rawEntity2, m_rawEntity3;
+	/*RawEntity m_rawEntity, m_rawEntity2, m_rawEntity3;
 	Texture m_texture1, m_texture2, m_texture3, m_texture4;
 
 	Entity m_terrain;
 	Player m_player;
 	Obstacle m_wall_1, m_wall_2, m_wall_3, m_wall_4;
 	Obstacle m_barrier;
-	Target m_target;
+	Target m_target;*/
+
+	Model m_model;
+	Player m_player;
 
 	std::vector<Entity*> m_entityList;
 	std::vector<IUpdatable*> m_updatableList;

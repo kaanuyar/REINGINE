@@ -4,7 +4,7 @@
 
 AABB::AABB(Entity& entity)
 {
-	calculateBoundingBox(entity.getVertices());
+	calculateBoundingBox(entity.getModel());
 	this->update(entity);
 	// add update method here for the creation this shit is stupid is hell and give entity to this function not vertices :)
 }
@@ -31,6 +31,47 @@ bool AABB::collideWith(AABB* aabb)
 			m_worldMinVertex.y < aabb->getWorldMaxVertex().y &&
 			m_worldMaxVertex.z > aabb->getWorldMinVertex().z &&
 			m_worldMinVertex.z < aabb->getWorldMaxVertex().z);
+}
+
+
+
+void AABB::calculateBoundingBox(Model& model)
+{
+
+	std::vector<std::unique_ptr<Mesh>>& vec = model.getMeshes();
+	for (auto it = vec.begin(); it != vec.end(); ++it)
+	{
+		Mesh* mesh = it->get();
+		std::vector<Vertx>& vertices = mesh->getVertices();
+
+		for (unsigned int i = 0; i < vertices.size(); i++)
+		{
+			if (i % 3 == 0)
+			{
+				if (i == 0 || vertices[i].Position.x < m_localMinVertex.x)
+					m_localMinVertex.x = vertices[i].Position.x;
+				if (i == 0 || vertices[i].Position.x > m_localMaxVertex.x)
+					m_localMaxVertex.x = vertices[i].Position.x;
+			}
+			else if (i % 3 == 1)
+			{
+				if (i == 1 || vertices[i].Position.y < m_localMinVertex.y)
+					m_localMinVertex.y = vertices[i].Position.y;
+				if (i == 1 || vertices[i].Position.y > m_localMaxVertex.y)
+					m_localMaxVertex.y = vertices[i].Position.y;
+			}
+			else if (i % 3 == 2)
+			{
+				if (i == 2 || vertices[i].Position.z < m_localMinVertex.z)
+					m_localMinVertex.z = vertices[i].Position.z;
+				if (i == 2 || vertices[i].Position.z > m_localMaxVertex.z)
+					m_localMaxVertex.z = vertices[i].Position.z;
+			}
+		}
+	}
+
+	setWorldMinVertex(m_localMinVertex);
+	setWorldMaxVertex(m_localMaxVertex);
 }
 
 // assumes vertices array consists of pos(3), texture(2) and normal(3)

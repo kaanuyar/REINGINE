@@ -3,8 +3,8 @@
 
 #include <cmath>
 
-Player::Player(Game* game, RawEntity& rawEntity, Texture& texture, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
-	: InteractableEntity(rawEntity, texture, worldTranslation, worldRotation, worldScale), m_aabb(*this),
+Player::Player(Game* game, Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
+	: InteractableEntity(model, worldTranslation, worldRotation, worldScale), m_aabb(*this),
 	  m_prevTranslationVector(worldTranslation.x, worldTranslation.y, worldTranslation.z), m_game(game),
 	  m_edgeLengthVec(m_aabb.getWorldMaxVertex() - m_aabb.getWorldMinVertex())
 {
