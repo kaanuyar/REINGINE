@@ -29,6 +29,14 @@ Game::Game(Window& window)
 {
 	m_entityShaderProgram.loadLight(m_light);
 	m_player.addRayCaster(&m_rayCaster);
+
+	/*Model model("res/models/watchtower/watchtower.obj");
+	std::vector<std::unique_ptr<Mesh>>& vec = model.getMeshes();
+	for (auto it = vec.begin(); it != vec.end(); ++it)
+	{
+		Mesh* mesh = it->get();
+		std::cout << mesh->getVAO() << std::endl;
+	}*/
 }
 
 void Game::update(float deltaTime)
