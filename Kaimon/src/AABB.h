@@ -13,9 +13,6 @@ public:
 	bool collideWith(ICollider* collider);
 	bool collideWith(AABB* aabb);
 
-	Vector3f getLocalMinVertex();
-	Vector3f getLocalMaxVertex();
-
 	Vector3f getWorldMinVertex();
 	Vector3f getWorldMaxVertex();
 
@@ -24,7 +21,6 @@ public:
 
 private:
 	void AABB::calculateBoundingBox(Model& model);
-	void calculateBoundingBox(std::vector<float>& vertices);
 
 	Vector3f m_localMinVertex;
 	Vector3f m_localMaxVertex;

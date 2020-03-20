@@ -2,12 +2,10 @@
 #include <vector>
 #include "EntityShaderProgram.h"
 #include "Entity.h"
-#include "RawEntity.h"
 #include "Renderer.h"
 #include "Window.h"
 #include "Texture.h"
 #include "Vector3f.h"
-#include "OBJLoader.h"
 #include "Terrain.h"
 #include "Camera.h"
 #include "InputHandler.h"
@@ -41,17 +39,11 @@ private:
 	Camera m_camera;
 	Light m_light;
 
-	/*RawEntity m_rawEntity, m_rawEntity2, m_rawEntity3;
-	Texture m_texture1, m_texture2, m_texture3, m_texture4;
-
+	Model m_playerModel, m_terrainModel, m_wallModel, m_targetModel;
+	Player m_player;
 	Entity m_terrain;
-	Player m_player;
-	Obstacle m_wall_1, m_wall_2, m_wall_3, m_wall_4;
-	Obstacle m_barrier;
-	Target m_target;*/
-
-	Model m_model;
-	Player m_player;
+	Target m_target;
+	Obstacle m_wall_1, m_wall_2, m_wall_3, m_wall_4, m_barrier;
 
 	std::vector<Entity*> m_entityList;
 	std::vector<IUpdatable*> m_updatableList;

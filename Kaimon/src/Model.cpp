@@ -5,6 +5,11 @@ Model::Model(std::string const& path)
 	loadModel(path);
 }
 
+Model::Model(std::vector<std::unique_ptr<Mesh>>&& meshes)
+	: m_meshes(std::move(meshes)), m_directory("program_generated")
+{
+}
+
 std::vector<std::unique_ptr<Mesh>>& Model::getMeshes()
 {
 	return m_meshes;
@@ -100,7 +105,7 @@ std::unique_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	textures.insert(textures.end(), std::make_move_iterator(heightMaps.begin()), std::make_move_iterator(heightMaps.end()));
 
 	// return a mesh object created from the extracted mesh data
-	return std::make_unique<Mesh>(vertices, indices, std::move(textures));
+	return std::make_unique<Mesh>(std::move(vertices), std::move(indices), std::move(textures));
 }
 
 std::vector<std::unique_ptr<Texture>> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, Texture::Type typeName)

@@ -37,8 +37,8 @@ bool AABB::collideWith(AABB* aabb)
 
 void AABB::calculateBoundingBox(Model& model)
 {
-
 	std::vector<std::unique_ptr<Mesh>>& vec = model.getMeshes();
+	int k = 0;
 	for (auto it = vec.begin(); it != vec.end(); ++it)
 	{
 		Mesh* mesh = it->get();
@@ -48,73 +48,29 @@ void AABB::calculateBoundingBox(Model& model)
 		{
 			if (i % 3 == 0)
 			{
-				if (i == 0 || vertices[i].Position.x < m_localMinVertex.x)
+				if (k == 0 || vertices[i].Position.x < m_localMinVertex.x)
 					m_localMinVertex.x = vertices[i].Position.x;
-				if (i == 0 || vertices[i].Position.x > m_localMaxVertex.x)
+				if (k == 0 || vertices[i].Position.x > m_localMaxVertex.x)
 					m_localMaxVertex.x = vertices[i].Position.x;
 			}
 			else if (i % 3 == 1)
 			{
-				if (i == 1 || vertices[i].Position.y < m_localMinVertex.y)
+				if (k == 1 || vertices[i].Position.y < m_localMinVertex.y)
 					m_localMinVertex.y = vertices[i].Position.y;
-				if (i == 1 || vertices[i].Position.y > m_localMaxVertex.y)
+				if (k == 1 || vertices[i].Position.y > m_localMaxVertex.y)
 					m_localMaxVertex.y = vertices[i].Position.y;
 			}
 			else if (i % 3 == 2)
 			{
-				if (i == 2 || vertices[i].Position.z < m_localMinVertex.z)
+				if (k == 2 || vertices[i].Position.z < m_localMinVertex.z)
 					m_localMinVertex.z = vertices[i].Position.z;
-				if (i == 2 || vertices[i].Position.z > m_localMaxVertex.z)
+				if (k == 2 || vertices[i].Position.z > m_localMaxVertex.z)
 					m_localMaxVertex.z = vertices[i].Position.z;
 			}
+
+			k++;
 		}
 	}
-
-	setWorldMinVertex(m_localMinVertex);
-	setWorldMaxVertex(m_localMaxVertex);
-}
-
-// assumes vertices array consists of pos(3), texture(2) and normal(3)
-void AABB::calculateBoundingBox(std::vector<float>& vertices)
-{
-	for (unsigned int i = 0; i < vertices.size(); i++)
-	{
-		if (i % 8 == 0)
-		{
-			if (i == 0 || vertices[i] < m_localMinVertex.x)
-				m_localMinVertex.x = vertices[i];
-			if (i == 0 || vertices[i] > m_localMaxVertex.x)
-				m_localMaxVertex.x = vertices[i];
-		}
-		else if (i % 8 == 1)
-		{
-			if (i == 1 || vertices[i] < m_localMinVertex.y)
-				m_localMinVertex.y = vertices[i];
-			if (i == 1 || vertices[i] > m_localMaxVertex.y)
-				m_localMaxVertex.y = vertices[i];
-		}
-		else if (i % 8 == 2)
-		{
-			if (i == 2 || vertices[i] < m_localMinVertex.z)
-				m_localMinVertex.z = vertices[i];
-			if (i == 2 || vertices[i] > m_localMaxVertex.z)
-				m_localMaxVertex.z = vertices[i];
-		}
-	}
-
-	setWorldMinVertex(m_localMinVertex);
-	setWorldMaxVertex(m_localMaxVertex);
-}
-
-
-Vector3f AABB::getLocalMinVertex()
-{
-	return m_localMinVertex;
-}
-
-Vector3f AABB::getLocalMaxVertex()
-{
-	return m_localMaxVertex;
 }
 
 Vector3f AABB::getWorldMinVertex()

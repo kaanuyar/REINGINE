@@ -15,6 +15,7 @@ class Model
 {
 public:
 	Model(std::string const &path);
+	Model(std::vector<std::unique_ptr<Mesh>>&& meshes);
 
 	std::vector<std::unique_ptr<Mesh>>& getMeshes();
 private:
