@@ -3,16 +3,16 @@
 
 #include <cmath>
 
-Player::Player(Game* game, Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
-	: InteractableEntity(model, worldTranslation, worldRotation, worldScale), m_aabb(*this),
+Player::Player(Game* game, Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale, RayCaster* rayCaster)
+	: InteractableEntity(model, worldTranslation, worldRotation, worldScale), m_aabb(*this), m_collisionModel(m_aabb.createModel()),
 	  m_prevTranslationVector(worldTranslation.x, worldTranslation.y, worldTranslation.z), m_game(game),
-	  m_edgeLengthVec(m_aabb.getWorldMaxVertex() - m_aabb.getWorldMinVertex())
+	  m_edgeLengthVec(m_aabb.getWorldMaxVertex() - m_aabb.getWorldMinVertex()), m_rayCasterPtr(rayCaster)
 {
 }
 
 void Player::update(float deltaTime)
 {
-	m_prevTranslationVector.setVector(getTranslationVector());
+	m_prevTranslationVector = getTranslationVector();
 
 	std::vector<Event>& eventList = m_eventHandler.getEventList();
 	if (eventList.empty())
@@ -30,7 +30,7 @@ void Player::update(float deltaTime)
 			moveRight(deltaTime);
 		else if (Event::KEY_R == it->state)
 			rotateAroundYAxis(deltaTime);
-		else if (Event::MOUSE_BUTTON_RIGHT_PRESSED == it->state && m_hasRayCaster)
+		else if (Event::MOUSE_BUTTON_RIGHT_PRESSED == it->state && m_rayCasterPtr)
 		{
 			if (!it->isProcessed)
 			{
@@ -68,16 +68,6 @@ void Player::update(float deltaTime)
 EventHandler& Player::getEventHandler()
 {
 	return m_eventHandler;
-}
-
-void Player::addRayCaster(RayCaster* rayCasterPtr)
-{
-	if (!m_hasRayCaster)
-	{
-		m_rayCasterPtr = rayCasterPtr;
-		m_hasRayCaster = true;
-	}
-
 }
 
 void Player::restartPosition(Vector3f terrainMinVec, Vector3f terrainMaxVec)
@@ -129,6 +119,11 @@ AABB& Player::getAABB()
 Vector3f Player::getEdgeLengthVec()
 {
 	return m_edgeLengthVec;
+}
+
+Model& Player::getCollisionModel()
+{
+	return m_collisionModel;
 }
 
 

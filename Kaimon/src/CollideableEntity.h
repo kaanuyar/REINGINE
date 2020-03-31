@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "ICollideable.h"
+#include "Model.h"
 
 class CollideableEntity : public Entity, public ICollideable
 {
@@ -13,4 +14,7 @@ public:
 	virtual void collisionResolution(Player* player) = 0;
 	virtual void collisionResolution(Obstacle* obstacle) = 0;
 	virtual void collisionResolution(Target* target) = 0;
+
+	// new stuff
+	virtual Model& getCollisionModel() = 0;
 };

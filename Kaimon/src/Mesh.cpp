@@ -56,10 +56,10 @@ void Mesh::setupMesh()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertx), (void*)0);
 	// vertex texture coords
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertx), (void*)offsetof(Vertx, TexCoords));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertx), (void*)offsetof(Vertx, texCoords));
 	// vertex normals
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertx), (void*)offsetof(Vertx, Normal));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertx), (void*)offsetof(Vertx, normal));
 
 
 	glBindVertexArray(0);

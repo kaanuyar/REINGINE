@@ -6,11 +6,17 @@
 #include "Camera.h"
 #include "Window.h"
 #include "ViewFrustum.h"
-#include <unordered_map>
+#include "CollideableEntity.h"
 
-namespace Renderer
+
+class Renderer
 {
-	void renderEntities(EntityShaderProgram& entityShaderProgram, Camera& camera, ViewFrustum& frustum, std::vector<Entity*>& entityList);
-	//std::unordered_map<RawEntity*, std::vector<Entity*>> processEntity(std::vector<Entity*>& entityList);
+public:
+	Renderer() : m_entityShader("src/shaders/VertexShader.vert", "src/shaders/FragmentShader.frag") {}
+	void renderEntities(Camera& camera, ViewFrustum& frustum, Light& light, std::vector<Entity*>& entityList);
 
-}
+private:
+	void renderMeshes(std::vector<std::unique_ptr<Mesh>>& meshes);
+
+	EntityShaderProgram m_entityShader;
+};

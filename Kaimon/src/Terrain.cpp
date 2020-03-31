@@ -19,9 +19,9 @@ namespace Terrain
 		for (int i = 0; i < 4; i++)
 		{
 			Vertx vertex;
-			vertex.Position = glm::vec3(vertices[i * 8], vertices[i * 8 + 1], vertices[i * 8 + 2]);
-			vertex.TexCoords = glm::vec2(vertices[i * 8 + 3], vertices[i * 8 + 4]);
-			vertex.Normal = glm::vec3(vertices[i * 8 + 5], vertices[i * 8 + 6], vertices[i * 8 + 7]);
+			vertex.position = Vector3f(vertices[i * 8], vertices[i * 8 + 1], vertices[i * 8 + 2]);
+			vertex.texCoords = Vector2f(vertices[i * 8 + 3], vertices[i * 8 + 4]);
+			vertex.normal = Vector3f(vertices[i * 8 + 5], vertices[i * 8 + 6], vertices[i * 8 + 7]);
 			vertxVec.push_back(vertex);
 		}
 
@@ -34,4 +34,3 @@ namespace Terrain
 		return Model(std::move(meshVec));
 	}
 }
-

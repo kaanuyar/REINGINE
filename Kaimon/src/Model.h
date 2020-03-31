@@ -19,10 +19,10 @@ public:
 
 	std::vector<std::unique_ptr<Mesh>>& getMeshes();
 private:
-	void loadModel(std::string const &path);
-	void processNode(aiNode *node, const aiScene *scene);
-	std::unique_ptr<Mesh> processMesh(aiMesh *mesh, const aiScene *scene);
-	std::vector<std::unique_ptr<Texture>> loadMaterialTextures(aiMaterial *mat, aiTextureType type, Texture::Type typeName);
+	void loadModel(std::string const& path);
+	void processNode(aiNode* node, const aiScene* scene);
+	std::unique_ptr<Mesh> processMesh(aiMesh* mesh, const aiScene* scene);
+	std::vector<std::unique_ptr<Texture>> loadMaterialTextures(aiMaterial* mat, aiTextureType type, Texture::Type typeName);
 
 	/*  Model Data */
 	std::vector<std::unique_ptr<Mesh>> m_meshes;

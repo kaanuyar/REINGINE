@@ -6,16 +6,17 @@ AABB::AABB(Entity& entity)
 {
 	calculateBoundingBox(entity.getModel());
 	this->update(entity);
-	// add update method here for the creation this shit is stupid is hell and give entity to this function not vertices :)
 }
 
 void AABB::update(Entity& entity)
 {
-	setWorldMinVertex(MathCalc::transformVector3f(entity, m_localMinVertex));
-	setWorldMaxVertex(MathCalc::transformVector3f(entity, m_localMaxVertex));
+	m_worldMaxVertex = MathCalc::transformVector3f(entity, m_localMaxVertex);
+	m_worldMinVertex = MathCalc::transformVector3f(entity, m_localMinVertex);
 
-	//std::cout << "min: " << m_worldMinVertex.x << " " << m_worldMinVertex.y << " " << m_worldMinVertex.z << std::endl;
-	//std::cout << "max: " << m_worldMaxVertex.x << " " << m_worldMaxVertex.y << " " << m_worldMaxVertex.z << std::endl;
+	/*for (Vector3f& vec : m_worldEdgeVertices)
+	{
+		vec = MathCalc::transformVector3f(entity, vec);
+	}*/
 }
 
 bool AABB::collideWith(ICollider* collider)
@@ -48,29 +49,49 @@ void AABB::calculateBoundingBox(Model& model)
 		{
 			if (i % 3 == 0)
 			{
-				if (k == 0 || vertices[i].Position.x < m_localMinVertex.x)
-					m_localMinVertex.x = vertices[i].Position.x;
-				if (k == 0 || vertices[i].Position.x > m_localMaxVertex.x)
-					m_localMaxVertex.x = vertices[i].Position.x;
+				if (k == 0 || vertices[i].position.x < m_localMinVertex.x)
+					m_localMinVertex.x = vertices[i].position.x;
+				if (k == 0 || vertices[i].position.x > m_localMaxVertex.x)
+					m_localMaxVertex.x = vertices[i].position.x;
 			}
 			else if (i % 3 == 1)
 			{
-				if (k == 1 || vertices[i].Position.y < m_localMinVertex.y)
-					m_localMinVertex.y = vertices[i].Position.y;
-				if (k == 1 || vertices[i].Position.y > m_localMaxVertex.y)
-					m_localMaxVertex.y = vertices[i].Position.y;
+				if (k == 1 || vertices[i].position.y < m_localMinVertex.y)
+					m_localMinVertex.y = vertices[i].position.y;
+				if (k == 1 || vertices[i].position.y > m_localMaxVertex.y)
+					m_localMaxVertex.y = vertices[i].position.y;
 			}
 			else if (i % 3 == 2)
 			{
-				if (k == 2 || vertices[i].Position.z < m_localMinVertex.z)
-					m_localMinVertex.z = vertices[i].Position.z;
-				if (k == 2 || vertices[i].Position.z > m_localMaxVertex.z)
-					m_localMaxVertex.z = vertices[i].Position.z;
+				if (k == 2 || vertices[i].position.z < m_localMinVertex.z)
+					m_localMinVertex.z = vertices[i].position.z;
+				if (k == 2 || vertices[i].position.z > m_localMaxVertex.z)
+					m_localMaxVertex.z = vertices[i].position.z;
 			}
 
 			k++;
 		}
 	}
+
+
+	m_worldMaxVertex = m_localMaxVertex;
+	m_worldMinVertex = m_localMinVertex;
+
+	// Top square: Counter clock wise starting from top right edge
+	m_localEdgeVertices.push_back(Vector3f(m_localMaxVertex.x, m_localMaxVertex.y, m_localMaxVertex.z));
+	m_localEdgeVertices.push_back(Vector3f(m_localMinVertex.x, m_localMaxVertex.y, m_localMaxVertex.z));
+	m_localEdgeVertices.push_back(Vector3f(m_localMinVertex.x, m_localMaxVertex.y, m_localMinVertex.z));
+	m_localEdgeVertices.push_back(Vector3f(m_localMaxVertex.x, m_localMaxVertex.y, m_localMinVertex.z));
+
+	// Bottom square: Counter clock wise starting from top right edge
+	m_localEdgeVertices.push_back(Vector3f(m_localMaxVertex.x, m_localMinVertex.y, m_localMaxVertex.z));
+	m_localEdgeVertices.push_back(Vector3f(m_localMinVertex.x, m_localMinVertex.y, m_localMaxVertex.z));
+	m_localEdgeVertices.push_back(Vector3f(m_localMinVertex.x, m_localMinVertex.y, m_localMinVertex.z));
+	m_localEdgeVertices.push_back(Vector3f(m_localMaxVertex.x, m_localMinVertex.y, m_localMinVertex.z));
+
+	// start world vector equal to local one
+	m_worldEdgeVertices = m_localEdgeVertices;
+
 }
 
 Vector3f AABB::getWorldMinVertex()
@@ -83,13 +104,36 @@ Vector3f AABB::getWorldMaxVertex()
 	return m_worldMaxVertex;
 }
 
-void AABB::setWorldMinVertex(Vector3f vec)
+std::vector<Vector3f>& AABB::getWorldEdgeVertices()
 {
-	m_worldMinVertex.setVector(vec);
+	return m_worldEdgeVertices;
 }
 
-void AABB::setWorldMaxVertex(Vector3f vec)
+Model AABB::createModel()
 {
-	m_worldMaxVertex.setVector(vec);
+	// maybe change shader and avoid this shit work, add if statements in shader should work for collider renders only XD have faith my mens))
+
+	std::vector<Vertx> vertxVec;
+	for (int i = 0; i < m_localEdgeVertices.size(); i++)
+	{
+		Vertx vertex;
+		vertex.position = m_localEdgeVertices.at(i);
+		vertex.texCoords = Vector2f(0.0f, 0.0f);
+		vertex.normal = Vector3f(0.0f, 1.0f, 0.0f);
+		vertxVec.push_back(vertex);
+	}
+
+	std::vector<unsigned int> indices = { 0, 1, 2,	2, 3, 0,  4, 5, 6,  6, 7, 4,
+		0, 3, 4,  3, 7, 4,  3, 6, 7,  2, 6, 3,
+		2, 1, 5,  6, 2, 5,  0, 4, 5,  5, 1, 0 };
+
+	std::vector<std::unique_ptr<Texture>> texVec;
+	texVec.push_back(std::make_unique<Texture>("res/textures/reddish.png", Texture::Type::TEXTURE_DIFFUSE));
+
+	std::vector<std::unique_ptr<Mesh>> meshVec;
+	meshVec.push_back(std::make_unique<Mesh>(std::move(vertxVec), std::move(indices), std::move(texVec)));
+
+	return Model(std::move(meshVec));
 }
+
 

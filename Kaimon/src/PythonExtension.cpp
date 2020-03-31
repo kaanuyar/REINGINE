@@ -1,6 +1,6 @@
 #include "PythonExtension.h"
 
-
+// you could paramatize "training" and "step" strings
 PythonExtension::PythonExtension()
 {
 	Py_Initialize();

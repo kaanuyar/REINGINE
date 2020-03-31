@@ -27,7 +27,7 @@
 class Game
 {
 public:
-	Game(Window& window);
+	Game(Window& window, bool pythonExtensionFlag);
 	void update(float deltaTime);
 	
 	void onSuccess();
@@ -35,26 +35,23 @@ public:
 	void onRestart();
 private:
 	ViewFrustum m_frustum;
-	EntityShaderProgram m_entityShaderProgram;
+	Renderer m_renderer;
 	Camera m_camera;
 	Light m_light;
+	RayCaster m_rayCaster;
 
-	Model m_playerModel, m_terrainModel, m_wallModel, m_targetModel;
-	Player m_player;
+	Model m_playerModel, m_wallModel, m_targetModel, m_terrainModel;
 	Entity m_terrain;
+	Player m_player;
 	Target m_target;
-	Obstacle m_wall_1, m_wall_2, m_wall_3, m_wall_4, m_barrier;
+	Obstacle m_border1, m_border2, m_border3, m_border4, m_barrier;
 
 	std::vector<Entity*> m_entityList;
 	std::vector<IUpdatable*> m_updatableList;
-	std::vector<ICollideable*> m_collideableList;
 
-	RayCaster m_rayCaster;
 	InputHandler m_inputHandler;
-	//PythonExtension m_pythonExtension;
+	std::unique_ptr<PythonExtension> m_pythonExtension;
 	Timer m_timer;
 
-	// Constants
-	const Vector3f TERRAIN_MAX_VEC { -5.0f, 0.0f, -5.0f };
-	const Vector3f TERRAIN_MIN_VEC { 5.0f, 0.0f, 5.0f };
+	bool m_pythonExtensionFlag;
 };

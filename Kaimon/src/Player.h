@@ -7,7 +7,7 @@ class Game;
 class Player : public InteractableEntity
 {
 public:
-	Player(Game* game, Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale);
+	Player(Game* game, Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale, RayCaster* rayCaster = nullptr);
 	
 	virtual EventHandler& getEventHandler();
 	virtual void update(float deltaTime);
@@ -17,15 +17,19 @@ public:
 	virtual void collisionResolution(Obstacle* obstacle);
 	virtual void collisionResolution(Target* target);
 
-	void addRayCaster(RayCaster* rayCasterPtr);
 	void restartPosition(Vector3f terrainMinVec, Vector3f terrainMaxVec);
 
 	// for testing 
 	AABB& getAABB();
 	Vector3f getEdgeLengthVec();
 
+	// new stuff
+	virtual Model& getCollisionModel();
+
 private:
 	EventHandler m_eventHandler;
+	AABB m_aabb;
+	Model m_collisionModel;
 
 	void moveForward(float deltaTime);
 	void moveBackward(float deltaTime);
@@ -36,9 +40,6 @@ private:
 	void moveToAngle(float angleInDegrees, float deltaTime);
 
 	RayCaster* m_rayCasterPtr = nullptr;
-	bool m_hasRayCaster = false;
-
-	AABB m_aabb;
 	Vector3f m_prevTranslationVector;
 	Vector3f m_edgeLengthVec;
 	Game* m_game;

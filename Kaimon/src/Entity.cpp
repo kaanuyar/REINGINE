@@ -43,6 +43,6 @@ void Entity::increaseRotationVector(float dx, float dy, float dz)
 
 void Entity::setTranslationVector(Vector3f vec)
 {
-	m_translationVector.setVector(vec);
+	m_translationVector = vec;
 }
 

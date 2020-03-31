@@ -22,4 +22,7 @@ public:
 	virtual void collisionResolution(Player* player) = 0;
 	virtual void collisionResolution(Obstacle* obstacle) = 0;
 	virtual void collisionResolution(Target* target) = 0;
+
+	// new stuff
+	virtual Model& getCollisionModel() = 0;
 };	

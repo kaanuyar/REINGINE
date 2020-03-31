@@ -3,8 +3,6 @@
 #include "Camera.h"
 #include "Vector3f.h"
 #include "ViewFrustum.h"
-
-
 #include "InteractableEntity.h"
 
 #include <GLM/glm.hpp>

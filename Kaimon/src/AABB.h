@@ -3,6 +3,7 @@
 #include "Vector3f.h"
 #include "Entity.h"
 #include "ICollider.h"
+#include "Model.h"
 
 class AABB : public ICollider
 {
@@ -16,8 +17,8 @@ public:
 	Vector3f getWorldMinVertex();
 	Vector3f getWorldMaxVertex();
 
-	void setWorldMinVertex(Vector3f vec);
-	void setWorldMaxVertex(Vector3f vec);
+	std::vector<Vector3f>& getWorldEdgeVertices();
+	Model createModel();
 
 private:
 	void AABB::calculateBoundingBox(Model& model);
@@ -27,4 +28,7 @@ private:
 
 	Vector3f m_worldMinVertex;
 	Vector3f m_worldMaxVertex;
+
+	std::vector<Vector3f> m_localEdgeVertices;
+	std::vector<Vector3f> m_worldEdgeVertices;
 };

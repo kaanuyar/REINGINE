@@ -2,19 +2,18 @@
 
 #include <glad/glad.h> // holds all OpenGL type declarations
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
 #include <string>
 #include <vector>
 #include <memory>
 #include "Texture.h"
+#include "Vector3f.h"
+#include "Vector2f.h"
 
 struct Vertx
 {
-	glm::vec3 Position;
-	glm::vec2 TexCoords;
-	glm::vec3 Normal;
+	Vector3f position;
+	Vector2f texCoords;
+	Vector3f normal;
 };
 
 class Mesh {

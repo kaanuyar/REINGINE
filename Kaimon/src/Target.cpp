@@ -2,7 +2,7 @@
 #include "MathCalc.h"
 
 Target::Target(Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
-	: CollideableEntity(model, worldTranslation, worldRotation, worldScale), m_aabb(*this),
+	: CollideableEntity(model, worldTranslation, worldRotation, worldScale), m_aabb(*this), m_collisionModel(m_aabb.createModel()),
 	  m_edgeLengthVec(m_aabb.getWorldMaxVertex() - m_aabb.getWorldMinVertex())
 {
 }
@@ -46,4 +46,9 @@ void Target::restartPosition(Vector3f terrainMinVec, Vector3f terrainMaxVec)
 AABB& Target::getAABB()
 {
 	return m_aabb;
+}
+
+Model& Target::getCollisionModel()
+{
+	return m_collisionModel;
 }

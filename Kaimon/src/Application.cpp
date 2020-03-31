@@ -2,7 +2,7 @@
 #include <iostream>
 
 Application::Application()
-	: m_window(800, 450, std::string("Kaimon"), true), m_game(m_window)
+	: m_window(800, 450, std::string("Kaimon"), true), m_game(m_window, false)
 {
 }
 

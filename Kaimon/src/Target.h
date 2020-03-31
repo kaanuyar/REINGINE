@@ -20,8 +20,11 @@ public:
 
 	// for testing
 	AABB& getAABB();
+	// new stuff
+	virtual Model& getCollisionModel();
 
 private:
 	AABB m_aabb;
+	Model m_collisionModel;
 	Vector3f m_edgeLengthVec;
 };
