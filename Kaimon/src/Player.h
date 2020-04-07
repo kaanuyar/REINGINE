@@ -17,19 +17,17 @@ public:
 	virtual void collisionResolution(Obstacle* obstacle);
 	virtual void collisionResolution(Target* target);
 
-	void restartPosition(Vector3f terrainMinVec, Vector3f terrainMaxVec);
+	void resetTransform(Vector3f terrainMinVec, Vector3f terrainMaxVec);
 
-	// for testing 
-	AABB& getAABB();
+	OBB& getOBB();
 	Vector3f getEdgeLengthVec();
 
-	// new stuff
-	virtual Model& getCollisionModel();
+	virtual ColliderMesh* getColliderMesh();
 
 private:
 	EventHandler m_eventHandler;
-	AABB m_aabb;
-	Model m_collisionModel;
+	OBB m_OBB;
+	std::unique_ptr<ColliderMesh> m_colliderMesh;
 
 	void moveForward(float deltaTime);
 	void moveBackward(float deltaTime);
@@ -41,6 +39,7 @@ private:
 
 	RayCaster* m_rayCasterPtr = nullptr;
 	Vector3f m_prevTranslationVector;
+	Vector3f m_prevRotationVector;
 	Vector3f m_edgeLengthVec;
 	Game* m_game;
 };

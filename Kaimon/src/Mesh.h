@@ -16,6 +16,7 @@ struct Vertx
 	Vector3f normal;
 };
 
+
 class Mesh {
 public:
 	Mesh(std::vector<Vertx>&& vertices, std::vector<unsigned int>&& indices, std::vector<std::unique_ptr<Texture>>&& textures);

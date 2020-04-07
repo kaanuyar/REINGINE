@@ -6,6 +6,7 @@
 #include "IUpdatable.h"
 #include "RayCaster.h"
 #include "AABB.h"
+#include "OBB.h"
 
 #include "CollideableEntity.h"
 
@@ -23,6 +24,5 @@ public:
 	virtual void collisionResolution(Obstacle* obstacle) = 0;
 	virtual void collisionResolution(Target* target) = 0;
 
-	// new stuff
-	virtual Model& getCollisionModel() = 0;
+	virtual ColliderMesh* getColliderMesh() = 0;
 };	

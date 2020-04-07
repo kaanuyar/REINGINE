@@ -3,10 +3,21 @@
 #include <GLFW/glfw3.h>
 
 
-void Renderer::renderEntities(Camera& camera, ViewFrustum& frustum, Light& light, std::vector<Entity*>& entityList)
+void Renderer::renderScene(Camera& camera, ViewFrustum& frustum, Light& light, std::vector<Entity*>& entityList)
+{
+	prepareRender();
+	renderEntities(camera, frustum, light, entityList);
+	renderColliders(camera, frustum, light, entityList);
+}
+
+void Renderer::prepareRender()
 {
 	glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Renderer::renderEntities(Camera & camera, ViewFrustum & frustum, Light & light, std::vector<Entity*>& entityList)
+{
 	m_entityShader.useProgram();
 
 	m_entityShader.loadProjectionMatrix(frustum);
@@ -18,14 +29,6 @@ void Renderer::renderEntities(Camera& camera, ViewFrustum& frustum, Light& light
 	{
 		m_entityShader.loadTransformationMatrix(*entity);
 		renderMeshes(entity->getModel().getMeshes());
-
-		CollideableEntity* collideableEntity = nullptr;
-		if (collideableEntity = dynamic_cast<CollideableEntity*>(entity))
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			renderMeshes(collideableEntity->getCollisionModel().getMeshes());
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		}
 	}
 
 	m_entityShader.stopProgram();
@@ -37,35 +40,58 @@ void Renderer::renderMeshes(std::vector<std::unique_ptr<Mesh>>& meshes)
 	{
 		Mesh* mesh = it->get();
 
-		// bind appropriate textures
 		unsigned int diffuseNr = 1;
 		unsigned int specularNr = 1;
 		unsigned int normalNr = 1;
 		unsigned int heightNr = 1;
 		for (unsigned int i = 0; i < mesh->getTextures().size(); i++)
 		{
-			glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
-											  // retrieve texture number (the N in diffuse_textureN)
+			glActiveTexture(GL_TEXTURE0 + i);
+
 			std::string number;
 			Texture* texture = mesh->getTextures().at(i).get();
 			std::string name = texture->getTypeAsString();
 			if (name == "texture_diffuse")
 				number = std::to_string(diffuseNr++);
 			else if (name == "texture_specular")
-				number = std::to_string(specularNr++); // transfer unsigned int to stream
+				number = std::to_string(specularNr++);
 			else if (name == "texture_normal")
-				number = std::to_string(normalNr++); // transfer unsigned int to stream
+				number = std::to_string(normalNr++);
 			else if (name == "texture_height")
-				number = std::to_string(heightNr++); // transfer unsigned int to stream
+				number = std::to_string(heightNr++);
 
 			m_entityShader.setUniform1i(name + number, i);
-			// and finally bind the texture
 			glBindTexture(GL_TEXTURE_2D, texture->getID());
 		}
 
-		// draw mesh
 		glBindVertexArray(mesh->getVAO());
 		glDrawElements(GL_TRIANGLES, (unsigned int)mesh->getIndices().size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
 }
+
+void Renderer::renderColliders(Camera& camera, ViewFrustum& frustum, Light& light, std::vector<Entity*>& entityList)
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	m_colliderShader.useProgram();
+
+	m_colliderShader.loadProjectionMatrix(frustum);
+	m_colliderShader.loadViewMatrix(camera);
+
+	for (Entity* entity : entityList)
+	{
+		CollideableEntity* collideableEntity = nullptr;
+		if (collideableEntity = dynamic_cast<CollideableEntity*>(entity))
+		{
+			ColliderMesh* colliderMesh = collideableEntity->getColliderMesh();
+			m_colliderShader.loadTransformationMatrix(*entity);
+			glBindVertexArray(colliderMesh->getVAO());
+			glDrawElements(GL_TRIANGLES, (unsigned int)colliderMesh->getIndices().size(), GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
+		}
+	}
+
+	m_colliderShader.stopProgram();
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+

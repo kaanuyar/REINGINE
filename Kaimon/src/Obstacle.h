@@ -17,15 +17,13 @@ public:
 	virtual void collisionResolution(Obstacle* obstacle);
 	virtual void collisionResolution(Target* target);
 
-	void restartPosition(Vector3f terrainMinVec, Vector3f terrainMaxVec);
+	void resetTransform(Vector3f terrainMinVec, Vector3f terrainMaxVec);
 
-	// for testing
-	AABB& getAABB();
-	// new stuff
-	virtual Model& getCollisionModel();
+	OBB& getOBB();
+	virtual ColliderMesh* getColliderMesh();
 
 private:
-	AABB m_aabb;
-	Model m_collisionModel;
+	OBB m_OBB;
+	std::unique_ptr<ColliderMesh> m_colliderMesh;
 	Vector3f m_edgeLengthVec;
 };

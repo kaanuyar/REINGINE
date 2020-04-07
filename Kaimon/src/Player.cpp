@@ -4,15 +4,16 @@
 #include <cmath>
 
 Player::Player(Game* game, Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale, RayCaster* rayCaster)
-	: InteractableEntity(model, worldTranslation, worldRotation, worldScale), m_aabb(*this), m_collisionModel(m_aabb.createModel()),
-	  m_prevTranslationVector(worldTranslation.x, worldTranslation.y, worldTranslation.z), m_game(game),
-	  m_edgeLengthVec(m_aabb.getWorldMaxVertex() - m_aabb.getWorldMinVertex()), m_rayCasterPtr(rayCaster)
+	: InteractableEntity(model, worldTranslation, worldRotation, worldScale), m_OBB(*this), m_colliderMesh(m_OBB.createColliderMesh()),
+	  m_prevTranslationVector(worldTranslation), m_prevRotationVector(worldRotation), m_game(game),
+	  m_edgeLengthVec(m_OBB.getWorldMaxVertex() - m_OBB.getWorldMinVertex()), m_rayCasterPtr(rayCaster)
 {
 }
 
 void Player::update(float deltaTime)
 {
 	m_prevTranslationVector = getTranslationVector();
+	m_prevRotationVector = getRotationVector();
 
 	std::vector<Event>& eventList = m_eventHandler.getEventList();
 	if (eventList.empty())
@@ -61,7 +62,7 @@ void Player::update(float deltaTime)
 	}
 	m_eventHandler.deleteDeadEventsFromList();
 
-	m_aabb.update(*this);
+	m_OBB.update(*this);
 }
 
 
@@ -70,7 +71,7 @@ EventHandler& Player::getEventHandler()
 	return m_eventHandler;
 }
 
-void Player::restartPosition(Vector3f terrainMinVec, Vector3f terrainMaxVec)
+void Player::resetTransform(Vector3f terrainMinVec, Vector3f terrainMaxVec)
 {
 	Vector3f minTranslationVec, maxTranslationVec;
 	minTranslationVec.x = (terrainMinVec.x < 0) ? terrainMinVec.x + (m_edgeLengthVec.x / 2) : terrainMinVec.x - (m_edgeLengthVec.x / 2);
@@ -80,14 +81,15 @@ void Player::restartPosition(Vector3f terrainMinVec, Vector3f terrainMaxVec)
 	maxTranslationVec.z = (terrainMaxVec.z < 0) ? terrainMaxVec.z + (m_edgeLengthVec.z / 2) : terrainMaxVec.z - (m_edgeLengthVec.z / 2);
 
 	setTranslationVector(Vector3f(MathCalc::generateRandomFloat(minTranslationVec.x, maxTranslationVec.x), 0.0f, MathCalc::generateRandomFloat(minTranslationVec.z, maxTranslationVec.z)));
-	m_aabb.update(*this);
+	setRotationVector(Vector3f(0.0f, 0.0f, 0.0f));
+	m_OBB.update(*this);
 	m_eventHandler.getEventList().clear();
 }
 
 
 ICollider* Player::getCollider()
 {
-	return &m_aabb;
+	return &m_OBB;
 }
 
 void Player::collisionResolution(ICollideable* collideable)
@@ -102,7 +104,8 @@ void Player::collisionResolution(Player* player)
 void Player::collisionResolution(Obstacle* obstacle)
 {
 	setTranslationVector(m_prevTranslationVector);
-	m_aabb.update(*this);
+	setRotationVector(m_prevRotationVector);
+	m_OBB.update(*this);
 	m_eventHandler.getEventList().clear();
 }
 
@@ -111,9 +114,9 @@ void Player::collisionResolution(Target* target)
 	m_game->onSuccess();
 }
 
-AABB& Player::getAABB()
+OBB& Player::getOBB()
 {
-	return m_aabb;
+	return m_OBB;
 }
 
 Vector3f Player::getEdgeLengthVec()
@@ -121,9 +124,9 @@ Vector3f Player::getEdgeLengthVec()
 	return m_edgeLengthVec;
 }
 
-Model& Player::getCollisionModel()
+ColliderMesh* Player::getColliderMesh()
 {
-	return m_collisionModel;
+	return m_colliderMesh.get();
 }
 
 

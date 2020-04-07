@@ -2,15 +2,15 @@
 #include "MathCalc.h"
 
 Obstacle::Obstacle(Model& model, Vector3f worldTranslation, Vector3f worldRotation, Vector3f worldScale)
-	: CollideableEntity(model, worldTranslation, worldRotation, worldScale), m_aabb(*this), m_collisionModel(m_aabb.createModel()),
-	  m_edgeLengthVec(m_aabb.getWorldMaxVertex() - m_aabb.getWorldMinVertex())
+	: CollideableEntity(model, worldTranslation, worldRotation, worldScale), m_OBB(*this), m_colliderMesh(m_OBB.createColliderMesh()),
+	  m_edgeLengthVec(m_OBB.getWorldMaxVertex() - m_OBB.getWorldMinVertex())
 {
 }
 
 
 ICollider* Obstacle::getCollider()
 {
-	return &m_aabb;
+	return &m_OBB;
 }
 
 void Obstacle::collisionResolution(ICollideable* collideable)
@@ -30,7 +30,7 @@ void Obstacle::collisionResolution(Target* target)
 {
 }
 
-void Obstacle::restartPosition(Vector3f terrainMinVec, Vector3f terrainMaxVec)
+void Obstacle::resetTransform(Vector3f terrainMinVec, Vector3f terrainMaxVec)
 {
 	Vector3f minTranslationVec, maxTranslationVec;
 	minTranslationVec.x = (terrainMinVec.x < 0) ? terrainMinVec.x + (m_edgeLengthVec.x / 2) : terrainMinVec.x - (m_edgeLengthVec.x / 2);
@@ -40,15 +40,16 @@ void Obstacle::restartPosition(Vector3f terrainMinVec, Vector3f terrainMaxVec)
 	maxTranslationVec.z = (terrainMaxVec.z < 0) ? terrainMaxVec.z + (m_edgeLengthVec.z / 2) : terrainMaxVec.z - (m_edgeLengthVec.z / 2);
 
 	setTranslationVector(Vector3f(MathCalc::generateRandomFloat(minTranslationVec.x, maxTranslationVec.x), 0.0f, MathCalc::generateRandomFloat(minTranslationVec.z, maxTranslationVec.z)));
-	m_aabb.update(*this);
+	setRotationVector(Vector3f(0.0f, 0.0f, 0.0f));
+	m_OBB.update(*this);
 }
 
-AABB& Obstacle::getAABB()
+OBB& Obstacle::getOBB()
 {
-	return m_aabb;
+	return m_OBB;
 }
 
-Model& Obstacle::getCollisionModel()
+ColliderMesh* Obstacle::getColliderMesh()
 {
-	return m_collisionModel;
+	return m_colliderMesh.get();
 }

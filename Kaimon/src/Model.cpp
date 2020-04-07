@@ -117,12 +117,6 @@ std::vector<std::unique_ptr<Texture>> Model::loadMaterialTextures(aiMaterial* ma
 		mat->GetTexture(type, i, &str);
 		std::string filePath = m_directory + '/' + str.C_Str();
 		textures.push_back(std::make_unique<Texture>(filePath, typeName));
-
-		/*Texture texture;
-		texture.id = TextureFromFile(str.C_Str(), directory);
-		texture.type = typeName;
-		texture.path = str;
-		textures.push_back(texture);*/
 	}
 	return std::move(textures);
 }

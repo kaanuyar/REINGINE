@@ -46,3 +46,8 @@ void Entity::setTranslationVector(Vector3f vec)
 	m_translationVector = vec;
 }
 
+void Entity::setRotationVector(Vector3f vec)
+{
+	m_rotationVector = vec;
+}
+

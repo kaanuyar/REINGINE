@@ -12,7 +12,7 @@ void Application::runLoop()
 	{
 		float deltaTime = m_timer.getDeltaTime();
 		if (deltaTime > 0.2f)	deltaTime = 0.2f;
-		m_timer.countDeltaTimeTowardsFPS(deltaTime);
+			m_timer.countDeltaTimeTowardsFPS(deltaTime);
 
 		if (m_timer.returnEverySecond(deltaTime))
 			std::cout << "FPS: " << m_timer.getFPS() << std::endl;

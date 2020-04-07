@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "ICollideable.h"
 #include "Model.h"
+#include "ColliderMesh.h"
 
 class CollideableEntity : public Entity, public ICollideable
 {
@@ -15,6 +16,5 @@ public:
 	virtual void collisionResolution(Obstacle* obstacle) = 0;
 	virtual void collisionResolution(Target* target) = 0;
 
-	// new stuff
-	virtual Model& getCollisionModel() = 0;
+	virtual ColliderMesh* getColliderMesh() = 0;
 };

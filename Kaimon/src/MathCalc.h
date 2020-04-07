@@ -19,6 +19,10 @@ namespace MathCalc
 	Vector3f createRayCast(Camera& camera, ViewFrustum& frustum, float xpos, float ypos);
 	Vector3f findIntersectionPointForXPlane(Vector3f ray, Camera& camera);
 
-	Vector3f transformVector3f(Entity& entity, Vector3f pos);
+	Vector3f transformVector3fPos(Entity& entity, Vector3f pos);
+	Vector3f transformVector3fVec(Entity& entity, Vector3f vec);
 	float generateRandomFloat(float lowerBound, float upperBound);
+
+	Vector3f crossVector3f(Vector3f first, Vector3f second);
+	float dotVector3f(Vector3f first, Vector3f second);
 }

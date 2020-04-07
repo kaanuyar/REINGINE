@@ -31,7 +31,7 @@ Game::Game(Window& window, bool pythonExtensionFlag)
 
 void Game::update(float deltaTime)
 {
-	if (m_timer.isDeltaTimeFromLastRestart(5.0f))
+	if (m_timer.isDeltaTimeFromLastRestart(30.0f))
 		this->onFailure();
 
 	if (m_pythonExtensionFlag)
@@ -43,9 +43,8 @@ void Game::update(float deltaTime)
 	for (IUpdatable* updatable : m_updatableList)
 		updatable->update(deltaTime);
 
-	// do it properly with virtual functions not dynamic_cast XD good luck (SAME WITH RENDERER) (AND MAKE TEXTURELOADER)
 	CollisionManager::checkEntityCollisions(m_entityList);
-	m_renderer.renderEntities(m_camera, m_frustum, m_light, m_entityList);
+	m_renderer.renderScene(m_camera, m_frustum, m_light, m_entityList);
 }
 
 void Game::onSuccess()
@@ -69,9 +68,9 @@ void Game::onRestart()
 	std::vector<ICollideable*> collideableList = { &m_player, &m_target, &m_barrier };
 	do
 	{
-		m_player.restartPosition(Terrain::MIN_BOUNDARY_VEC, Terrain::MAX_BOUNDARY_VEC);
-		m_target.restartPosition(Terrain::MIN_BOUNDARY_VEC, Terrain::MAX_BOUNDARY_VEC);
-		m_barrier.restartPosition(Terrain::MIN_BOUNDARY_VEC, Terrain::MAX_BOUNDARY_VEC);
+		m_player.resetTransform(Terrain::MIN_BOUNDARY_VEC, Terrain::MAX_BOUNDARY_VEC);
+		m_target.resetTransform(Terrain::MIN_BOUNDARY_VEC, Terrain::MAX_BOUNDARY_VEC);
+		m_barrier.resetTransform(Terrain::MIN_BOUNDARY_VEC, Terrain::MAX_BOUNDARY_VEC);
 	} 
 	while (CollisionManager::checkCollisionsBool(collideableList));
 

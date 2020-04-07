@@ -10,13 +10,8 @@ AABB::AABB(Entity& entity)
 
 void AABB::update(Entity& entity)
 {
-	m_worldMaxVertex = MathCalc::transformVector3f(entity, m_localMaxVertex);
-	m_worldMinVertex = MathCalc::transformVector3f(entity, m_localMinVertex);
-
-	/*for (Vector3f& vec : m_worldEdgeVertices)
-	{
-		vec = MathCalc::transformVector3f(entity, vec);
-	}*/
+	m_worldMaxVertex = MathCalc::transformVector3fPos(entity, m_localMaxVertex);
+	m_worldMinVertex = MathCalc::transformVector3fPos(entity, m_localMinVertex);
 }
 
 bool AABB::collideWith(ICollider* collider)
@@ -34,6 +29,10 @@ bool AABB::collideWith(AABB* aabb)
 			m_worldMinVertex.z < aabb->getWorldMaxVertex().z);
 }
 
+bool AABB::collideWith(OBB* obb)
+{
+	return false;
+}
 
 
 void AABB::calculateBoundingBox(Model& model)
@@ -78,19 +77,16 @@ void AABB::calculateBoundingBox(Model& model)
 	m_worldMinVertex = m_localMinVertex;
 
 	// Top square: Counter clock wise starting from top right edge
-	m_localEdgeVertices.push_back(Vector3f(m_localMaxVertex.x, m_localMaxVertex.y, m_localMaxVertex.z));
-	m_localEdgeVertices.push_back(Vector3f(m_localMinVertex.x, m_localMaxVertex.y, m_localMaxVertex.z));
-	m_localEdgeVertices.push_back(Vector3f(m_localMinVertex.x, m_localMaxVertex.y, m_localMinVertex.z));
-	m_localEdgeVertices.push_back(Vector3f(m_localMaxVertex.x, m_localMaxVertex.y, m_localMinVertex.z));
+	m_localCornerVertices.push_back(Vector3f(m_localMaxVertex.x, m_localMaxVertex.y, m_localMaxVertex.z));
+	m_localCornerVertices.push_back(Vector3f(m_localMinVertex.x, m_localMaxVertex.y, m_localMaxVertex.z));
+	m_localCornerVertices.push_back(Vector3f(m_localMinVertex.x, m_localMaxVertex.y, m_localMinVertex.z));
+	m_localCornerVertices.push_back(Vector3f(m_localMaxVertex.x, m_localMaxVertex.y, m_localMinVertex.z));
 
 	// Bottom square: Counter clock wise starting from top right edge
-	m_localEdgeVertices.push_back(Vector3f(m_localMaxVertex.x, m_localMinVertex.y, m_localMaxVertex.z));
-	m_localEdgeVertices.push_back(Vector3f(m_localMinVertex.x, m_localMinVertex.y, m_localMaxVertex.z));
-	m_localEdgeVertices.push_back(Vector3f(m_localMinVertex.x, m_localMinVertex.y, m_localMinVertex.z));
-	m_localEdgeVertices.push_back(Vector3f(m_localMaxVertex.x, m_localMinVertex.y, m_localMinVertex.z));
-
-	// start world vector equal to local one
-	m_worldEdgeVertices = m_localEdgeVertices;
+	m_localCornerVertices.push_back(Vector3f(m_localMaxVertex.x, m_localMinVertex.y, m_localMaxVertex.z));
+	m_localCornerVertices.push_back(Vector3f(m_localMinVertex.x, m_localMinVertex.y, m_localMaxVertex.z));
+	m_localCornerVertices.push_back(Vector3f(m_localMinVertex.x, m_localMinVertex.y, m_localMinVertex.z));
+	m_localCornerVertices.push_back(Vector3f(m_localMaxVertex.x, m_localMinVertex.y, m_localMinVertex.z));
 
 }
 
@@ -104,36 +100,15 @@ Vector3f AABB::getWorldMaxVertex()
 	return m_worldMaxVertex;
 }
 
-std::vector<Vector3f>& AABB::getWorldEdgeVertices()
+std::unique_ptr<ColliderMesh> AABB::createColliderMesh()
 {
-	return m_worldEdgeVertices;
-}
-
-Model AABB::createModel()
-{
-	// maybe change shader and avoid this shit work, add if statements in shader should work for collider renders only XD have faith my mens))
-
-	std::vector<Vertx> vertxVec;
-	for (int i = 0; i < m_localEdgeVertices.size(); i++)
-	{
-		Vertx vertex;
-		vertex.position = m_localEdgeVertices.at(i);
-		vertex.texCoords = Vector2f(0.0f, 0.0f);
-		vertex.normal = Vector3f(0.0f, 1.0f, 0.0f);
-		vertxVec.push_back(vertex);
-	}
+	std::vector<Vector3f> vertices = m_localCornerVertices;
 
 	std::vector<unsigned int> indices = { 0, 1, 2,	2, 3, 0,  4, 5, 6,  6, 7, 4,
 		0, 3, 4,  3, 7, 4,  3, 6, 7,  2, 6, 3,
 		2, 1, 5,  6, 2, 5,  0, 4, 5,  5, 1, 0 };
 
-	std::vector<std::unique_ptr<Texture>> texVec;
-	texVec.push_back(std::make_unique<Texture>("res/textures/reddish.png", Texture::Type::TEXTURE_DIFFUSE));
-
-	std::vector<std::unique_ptr<Mesh>> meshVec;
-	meshVec.push_back(std::make_unique<Mesh>(std::move(vertxVec), std::move(indices), std::move(texVec)));
-
-	return Model(std::move(meshVec));
+	return std::make_unique<ColliderMesh>(std::move(vertices), std::move(indices));
 }
 
 

@@ -137,6 +137,7 @@
     <ClCompile Include="src\AABB.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\CollideableEntity.cpp" />
+    <ClCompile Include="src\ColliderMesh.cpp" />
     <ClCompile Include="src\CollisionManager.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\EntityShaderProgram.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="src\MathCalc.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\OBB.cpp" />
     <ClCompile Include="src\Obstacle.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Application.cpp" />
@@ -167,6 +169,7 @@
     <ClInclude Include="src\AABB.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\CollideableEntity.h" />
+    <ClInclude Include="src\ColliderMesh.h" />
     <ClInclude Include="src\CollisionManager.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityShaderProgram.h" />
@@ -182,6 +185,7 @@
     <ClInclude Include="src\MathCalc.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\Model.h" />
+    <ClInclude Include="src\OBB.h" />
     <ClInclude Include="src\Obstacle.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Application.h" />
@@ -199,6 +203,8 @@
     <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\shaders\ColliderFragment.frag" />
+    <None Include="src\shaders\ColliderVertex.vert" />
     <None Include="src\shaders\FragmentShader.frag" />
     <None Include="src\shaders\VertexShader.vert" />
   </ItemGroup>

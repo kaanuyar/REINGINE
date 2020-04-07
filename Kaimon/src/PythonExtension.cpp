@@ -36,14 +36,14 @@ float PythonExtension::callPythonAI(Player & player, Target & target, Obstacle &
 		PyObject* targetDict = PyDict_New();
 		PyObject* obstacleDict = PyDict_New();
 
-		insertKeyAndValuesToPyDict(playerDict, "playerMax", player.getAABB().getWorldMaxVertex());
-		insertKeyAndValuesToPyDict(playerDict, "playerMin", player.getAABB().getWorldMinVertex());
+		insertKeyAndValuesToPyDict(playerDict, "playerMax", player.getOBB().getWorldMaxVertex());
+		insertKeyAndValuesToPyDict(playerDict, "playerMin", player.getOBB().getWorldMinVertex());
 
-		insertKeyAndValuesToPyDict(targetDict, "targetMax", target.getAABB().getWorldMaxVertex());
-		insertKeyAndValuesToPyDict(targetDict, "targetMin", target.getAABB().getWorldMinVertex());
+		insertKeyAndValuesToPyDict(targetDict, "targetMax", target.getOBB().getWorldMaxVertex());
+		insertKeyAndValuesToPyDict(targetDict, "targetMin", target.getOBB().getWorldMinVertex());
 
-		insertKeyAndValuesToPyDict(obstacleDict, "obstacleMax", obstacle.getAABB().getWorldMaxVertex());
-		insertKeyAndValuesToPyDict(obstacleDict, "obstacleMin", obstacle.getAABB().getWorldMinVertex());
+		insertKeyAndValuesToPyDict(obstacleDict, "obstacleMax", obstacle.getOBB().getWorldMaxVertex());
+		insertKeyAndValuesToPyDict(obstacleDict, "obstacleMin", obstacle.getOBB().getWorldMinVertex());
 
 
 		PyObject* finalTuple = Py_BuildValue("{s:O,s:O,s:O,s:O,s:O}", "player", playerDict, "target", targetDict, "obstacle", obstacleDict, "isGameOver", isGameOver ? Py_True : Py_False, "isGameRestart", isGameRestart ? Py_True : Py_False);

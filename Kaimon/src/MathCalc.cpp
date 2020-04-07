@@ -86,7 +86,7 @@ namespace MathCalc
 		return Vector3f(intersection.x, intersection.y, intersection.z);
 	}
 
-	Vector3f transformVector3f(Entity& entity, Vector3f pos)
+	Vector3f transformVector3fPos(Entity& entity, Vector3f pos)
 	{
 		glm::mat4 model = glm::mat4(1.0f);
 
@@ -102,12 +102,39 @@ namespace MathCalc
 		return Vector3f(vec.x, vec.y, vec.z);
 	}
 
+	Vector3f transformVector3fVec(Entity & entity, Vector3f vec)
+	{
+		glm::mat4 model = glm::mat4(1.0f);
+
+		model = glm::translate(model, glm::vec3(entity.getTranslationVector().x, entity.getTranslationVector().y, entity.getTranslationVector().z));
+		model = glm::rotate(model, glm::radians(entity.getRotationVector().z), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(entity.getRotationVector().y), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(entity.getRotationVector().x), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(entity.getScaleVector().x, entity.getScaleVector().y, entity.getScaleVector().z));
+
+		glm::vec4 newVec(vec.x, vec.y, vec.z, 0.0f);
+		newVec = model * newVec;
+
+		return Vector3f(newVec.x, newVec.y, newVec.z);
+	}
+
 	float generateRandomFloat(float lowerBound, float upperBound)
 	{
 		std::random_device rd;
 		std::mt19937 rng(rd());
 		std::uniform_real_distribution<float> distance(lowerBound, upperBound);
 		return distance(rng);
+	}
+
+	Vector3f crossVector3f(Vector3f first, Vector3f second)
+	{
+		glm::vec3 axisGlm = glm::cross(glm::vec3(first.x, first.y, first.z), glm::vec3(second.x, second.y, second.z));
+		return Vector3f(axisGlm.x, axisGlm.y, axisGlm.z);
+	}
+
+	float dotVector3f(Vector3f first, Vector3f second)
+	{
+		return glm::dot(glm::vec3(first.x, first.y, first.z), glm::vec3(second.x, second.y, second.z));
 	}
 
 }
