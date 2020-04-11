@@ -47,6 +47,17 @@ void InputHandler::cursor_position_callback(GLFWwindow* window, double xpos, dou
 		for (IUpdatable* updatable : m_updatableList)
 			updatable->getEventHandler().addEventToList(Event(Event::MOUSE_BUTTON_MIDDLE_DRAGGED, false, float(xoffset), float(yoffset)));
 	}
+	else if (glfwGetMouseButton(m_window.getWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	{
+		double xpos, ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+
+		for (IUpdatable* updatable : m_updatableList)
+		{
+			updatable->getEventHandler().removeEventFromList(Event(Event::MOUSE_BUTTON_LEFT_PRESSED, true, float(xpos), float(ypos)));
+			updatable->getEventHandler().addEventToList(Event(Event::MOUSE_BUTTON_LEFT_PRESSED, true, float(xpos), float(ypos)));
+		}
+	}
 	else
 	{
 		m_prevXposition = xpos;
@@ -62,15 +73,15 @@ void InputHandler::scroll_callback(GLFWwindow* window, double xoffset, double yo
 
 void InputHandler::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
 
 		for (IUpdatable* updatable : m_updatableList)
 		{
-			updatable->getEventHandler().removeEventFromList(Event(Event::MOUSE_BUTTON_RIGHT_PRESSED, true, float(xpos), float(ypos)));
-			updatable->getEventHandler().addEventToList(Event(Event::MOUSE_BUTTON_RIGHT_PRESSED, true, float(xpos), float(ypos)));
+			updatable->getEventHandler().removeEventFromList(Event(Event::MOUSE_BUTTON_LEFT_PRESSED, true, float(xpos), float(ypos)));
+			updatable->getEventHandler().addEventToList(Event(Event::MOUSE_BUTTON_LEFT_PRESSED, true, float(xpos), float(ypos)));
 		}
 
 	}

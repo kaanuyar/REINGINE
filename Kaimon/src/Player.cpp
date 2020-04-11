@@ -31,7 +31,7 @@ void Player::update(float deltaTime)
 			moveRight(deltaTime);
 		else if (Event::KEY_R == it->state)
 			rotateAroundYAxis(deltaTime);
-		else if (Event::MOUSE_BUTTON_RIGHT_PRESSED == it->state && m_rayCasterPtr)
+		else if (Event::MOUSE_BUTTON_LEFT_PRESSED == it->state && m_rayCasterPtr)
 		{
 			if (!it->isProcessed)
 			{
@@ -42,7 +42,7 @@ void Player::update(float deltaTime)
 				it->z = interVec.z;
 				it->isProcessed = true;
 			}
-			else
+			if(it->isProcessed)
 			{
 				if (!moveTo(Vector3f(it->x, it->y, it->z), deltaTime))
 					it->isAlive = false;
@@ -170,11 +170,15 @@ bool Player::moveTo(Vector3f pos, float deltaTime)
 	length += pow(deltaPos.z, 2);
 	length = sqrt(length);
 
-	if (length <= 0.1f)
+	if (length <= 0.3)
 		return false;
 
 	float constant = 10.0f * deltaTime;
 	Vector3f normPos(constant * deltaPos.x / length, constant * deltaPos.y / length, constant * deltaPos.z / length);
+
+	constexpr double PI = 3.14159265358979323846;
+	Vector3f normalVec(deltaPos.x / length, deltaPos.y / length, deltaPos.z / length);
+	setRotationVector(Vector3f(0.0f, float(180.0f / PI * atan2(normalVec.x, normalVec.z)), 0.0f));
 
 	increaseTranslationVector(normPos.x, normPos.y, normPos.z);
 	return true;

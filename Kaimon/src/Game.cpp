@@ -21,7 +21,7 @@ Game::Game(Window& window, bool pythonExtensionFlag)
 	m_barrier(m_wallModel, Vector3f(0.0f, 0.0f, -2.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(2.0f, 1.0f, 0.25f)),
 	m_target(m_targetModel, Vector3f(0.0f, 0.0f, -4.0f), Vector3f(0.0f, 0.0f, 0.0f), Vector3f(0.25f, 3.0f, 0.25f)),
 
-	m_entityList { &m_player, &m_terrain, &m_border1, &m_border2, &m_border3, &m_border4, &m_barrier, &m_target },
+	m_entityList { &m_player, &m_terrain, &m_border1, &m_border2, &m_border3, &m_border4, &m_target },
 	m_updatableList { &m_camera, &m_frustum, &m_player },
 	m_inputHandler(window, m_updatableList)
 {
